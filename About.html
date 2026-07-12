@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me — Gideon Wakama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="index.html" class="brand"><span class="brand-mark">GW</span> Gideon Wakama</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" aria-current="page">About Me</a></li>
+      <li><a href="project.html">Projects</a></li>
+      <li><a href="planner.html">Academic Planner</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-block:3rem 3.5rem;">
+    <div class="container">
+      <span class="eyebrow">Wakama's Record</span>
+      <h1 style="font-size:var(--step-3);">About Me</h1>
+      <p class="lede">Educator first, engineer now. Here's the background, the goals, and the toolkit.</p>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section">
+    <div class="container">
+      <div class="ledger-rule"><span class="code">EDU · 101</span><span class="rule"></span></div>
+      <div class="section-header">
+        <h2>Educational Background</h2>
+        <p>A timeline of formal study, from classroom teaching to software engineering.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Period</th><th>Institution</th><th>Programme</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2026 – Present</td><td>Miva Open University</td><td>B.Sc. Software Engineering</td><td>In progress</td></tr>
+            
+            <tr><td>2017 - Present</td><td>Educational Assess Development Initiative. (self-founded)</td><td>Children and Teenage Potential Development and Programs.</td><td>9+ years' Educating/Coaching</td></tr>
+            <tr><td>2023 - Present</td><td>EADI / Learn Academy (self-founded)</td><td>Maths, Chemistry &amp; Physics tutoring</td><td>4+ years' teaching</td></tr>
+            <tr><td>2024 - Present</td><td>EADI / STEM CLUB NIGERIA (self-founded)</td><td>Soil Chemistry and Fertility (Agro-Tech, Technology in Software Development; Engineering in Green Power Solutions.</td><td>4+ years' STEM Lead</td></tr>
+            <tr><td>2025 - Present</td><td>STEM LEAD at <a href="https://theinnovationcentre.org">TheInnovationCentre</a></td><td> Hosting strategic partnerships and Executions.</td><td>2+ years' Lead Operations</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASPIRATIONS -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="ledger-rule"><span class="code">GOAL · 201</span><span class="rule"></span></div>
+      <div class="grid grid-2">
+        <div>
+          <h2 style="font-size:var(--step-2);">Career Aspirations</h2>
+          <p>I want to keep building at the intersection of education and software tools that remove
+            friction from how students prove their progress and how institutions verify it. CleP, my
+            clearance portal, is the first real test of that: a digital signature workflow that could
+            replace weeks of physical document chasing with a verifiable, sequential process.</p>
+          <p>Longer term, I'm aiming toward a role in EdTech product engineering, where I can pair
+            classroom-tested instructional design with production-grade software and keep the Educational Assess Development Initiative growing
+            alongside it.</p>
+        </div>
+        <ul style="display:flex; flex-direction:column; gap:0.9rem;">
+          <li class="card">🎯 Ship CleP to at least one partner institution</li>
+          <li class="card">🎯 Grow the STEM Club into a repeatable curriculum</li>
+          <li class="card">🎯 Transition fully into software engineering practice</li>
+          <li class="card">🎯 Publish a third book on applied learning systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <div class="container">
+      <div class="ledger-rule"><span class="code">SKL · 301</span><span class="rule"></span></div>
+      <div class="section-header">
+        <h2>Technical Skills</h2>
+        <p>Self-rated proficiency, updated each semester.</p>
+      </div>
+      <div class="grid grid-3" id="skillsGrid">
+        <div class="card" data-level="88">
+          <span class="tag">Frontend</span>
+          <h3>HTML / CSS / JS</h3>
+          <p class="small">Semantic markup, responsive layout, DOM-driven interactivity.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+        <div class="card" data-level="65">
+          <span class="tag">Language</span>
+          <h3>Python</h3>
+          <p class="small">Scripting, data labeling &amp; quality workflows, early data science.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+        <div class="card" data-level="72">
+          <span class="tag">Concept</span>
+          <h3>Mathematics for CS</h3>
+          <p class="small">Discrete math, statistics, and applied problem modelling.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+        <div class="card" data-level="60">
+          <span class="tag">Tooling</span>
+          <h3>Git &amp; GitHub</h3>
+          <p class="small">Version control for coursework and personal projects.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+        <div class="card" data-level="80">
+          <span class="tag">Craft</span>
+          <h3>Curriculum Design</h3>
+          <p class="small">Structuring STEM content for varied learning speeds.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+        <div class="card" data-level="55">
+          <span class="tag">Emerging</span>
+          <h3>Data Science</h3>
+          <p class="small">Exploring labeling, quality assessment, and basic modelling.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOBBIES -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="ledger-rule"><span class="code">EXT · 401</span><span class="rule"></span></div>
+      <div class="section-header">
+        <h2>Hobbies &amp; Interests</h2>
+      </div>
+      <ul class="grid grid-3">
+        <li class="card"><h3>⚽ Football Coaching</h3><p class="small">Running a youth academy of 40+ players and mentoring long-term talent.</p></li>
+        <li class="card"><h3>📚 Writing</h3><p class="small">Author of three books on academic motivation and National history.</p></li>
+        <li class="card"><h3>🎵 Music Production</h3><p class="small">Advising a multi-year music collaboration and marketing initiative.</p></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p style="margin:0;">© <span id="year"></span> Gideon Tamunosiki Wakama.</p>
+    <div class="social-row">
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/gideon-wakama-8a5682131" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="home.js"></script>
+</body>
+</html>

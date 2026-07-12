@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gideon Wakama — Academic Portfolio</title>
+<meta name="description" content="Personal academic portfolio and student management platform for Gideon Wakama, Software Engineering student.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="index.html" class="brand"><span class="brand-mark">GW</span> Gideon Wakama</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <li><a href="project.html">Projects</a></li>
+      <li><a href="planner.html">Academic Planner</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Portfolio · Software Engineering, Class of 2029</span>
+        <h1>Building things that <em>teach, verify,</em> and <em>organize</em>.</h1>
+        <p class="lede">I'm Gideon Tamunosiki Wakama — a mathematics &amp; science educator turned software
+          engineering student. This portfolio doubles as my personal academic hub: profile, coursework,
+          projects, and a live planner I use to run my own semester.</p>
+        <div class="cta-row">
+          <a href="project.html" class="btn btn-primary">View Projects</a>
+          <a href="contact.html" class="btn btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="id-card">
+        <div class="portrait">
+          <!-- Replace src with a real photograph, e.g. assets/profile.jpg -->
+          <img src="3964.jpg" alt="Portrait of Gideon Wakama">
+        </div>
+        <h3 style="margin:0 0 0.2rem;">Gideon T. Wakama</h3>
+        <p class="small" style="margin:0;">Software Engineering · Miva Open University</p>
+        <div class="stat-row"><span>Status</span><span>Active</span></div>
+        <div class="stat-row"><span>Focus</span><span>Web &amp; EdTech</span></div>
+        <div class="stat-row"><span>Cohort</span><span>January 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WELCOME / BIO -->
+  <section class="section">
+    <div class="container">
+      <div class="ledger-rule"><span class="code"> 01 — WELCOME</span><span class="rule"></span></div>
+      <div class="grid grid-2" style="align-items:center;">
+        <div>
+          <h2 style="font-size:var(--step-2); margin-bottom:0.75rem;">Welcome to my academic record.</h2>
+          <p>I founded the Educational Assess Development Initiative (EADI), its tutoring brand,
+            Learn Academy and its STEM Club, to make maths, chemistry, and physics click for students who'd 		    written
+            themselves off. That same instinct for building systems that help people learn now shows
+            up in the software I write: a clearance portal for schools, a STEM club platform, and the
+            planner exhibited, which I use every week to run my own coursework.</p>
+          <p>When I'm not coding or teaching, I coach a football academy of over 40 young players and
+            write. My two books explore academic motivation and record-keeping, which, funnily enough,
+            is exactly what this site is for.</p>
+          <a href="about.html" class="btn btn-dark">Read the full profile</a>
+        </div>
+        <div>
+          <div class="table-wrap">
+            <table>
+              <caption class="small" style="text-align:left; padding:0.6em 1em 0;">Quick reference</caption>
+              <thead>
+                <tr><th>Area</th><th>Detail</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Institution</td><td>Miva Open University</td></tr>
+                <tr><td>Programme</td><td>B.Sc. Software Engineering</td></tr>
+                <tr><td>Prior study</td><td>Mathematics Education, NOUN</td></tr>
+                <tr><td>Founded</td><td>EADI / Learn Academy / STEM Club Nigeria</td></tr>
+                <tr><td>Flagship build</td><td>CleP — Clearance Portal</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO VIDEO / MULTIMEDIA -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="ledger-rule"><span class="code"> — INTRODUCTION</span><span class="rule"></span></div>
+      <div class="section-header">
+        <h2>A minute of context</h2>
+        <p>A minute review of Wakama</p>
+      </div>
+      <video controls preload="none" poster="" style="width:100%; max-width:760px; border-radius:var(--radius); border:1px solid var(--line);">
+        <source src="Gideon demo.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="Gideon demo.mp4">Download the clip</a> instead.
+      </video>
+    </div>
+  </section>
+
+  <!-- QUICK LINKS -->
+  <section class="section">
+    <div class="container">
+      <div class="ledger-rule"><span class="code">03 — NAVIGATE</span><span class="rule"></span></div>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="tag">01 · Profile</span>
+          <h3>About Me</h3>
+          <p class="small">Education, aspirations, technical skills, and interests outside the classroom.</p>
+          <a href="about.html" class="btn btn-dark" style="margin-top:0.75rem;">Open</a>
+        </div>
+        <div class="card">
+          <span class="tag">02 · Work</span>
+          <h3>Projects</h3>
+          <p class="small">CleP, the STEM Club platform, and the football academy portfolio site.</p>
+          <a href="projects.html" class="btn btn-dark" style="margin-top:0.75rem;">Open</a>
+        </div>
+        <div class="card">
+          <span class="tag">03 · Tool</span>
+          <h3>Academic Planner</h3>
+          <p class="small">A working task manager — add, complete, and delete study tasks in real time.</p>
+          <a href="planner.html" class="btn btn-dark" style="margin-top:0.75rem;">Open</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p style="margin:0;">© <span id="year"></span> Gideon Tamunosiki Wakama. Built for the Web Technologies and education.</p>
+    <div class="social-row">
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/gideon-wakama-8a5682131" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="home.js"></script>
+</body>
+</html>

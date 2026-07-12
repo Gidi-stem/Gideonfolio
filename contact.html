@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Gideon Wakama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="index.html" class="brand"><span class="brand-mark">GW</span> Gideon Wakama</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="planner.html">Academic Planner</a></li>
+      <li><a href="contact.html" aria-current="page">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-block:3rem 3.5rem;">
+    <div class="container">
+      <span class="eyebrow">Get in Touch</span>
+      <h1 style="font-size:var(--step-3);">Contact</h1>
+      <p class="lede">Reach out about CleP, tutoring at Learn Academy, or anything else on this site.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+
+      <form class="contact-form" id="contactForm" novalidate>
+
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+          <span class="error-text" id="nameError"></span>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          <span class="error-text" id="emailError"></span>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Digits only, e.g. 08012345678" required>
+          <span class="error-text" id="phoneError"></span>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="What would you like to talk about?" required></textarea>
+          <span class="error-text" id="messageError"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+      </form>
+
+      <aside>
+        <div class="ledger-rule"><span class="code">§ REACH</span><span class="rule"></span></div>
+        <ul class="info-list">
+          <li class="item">
+            <span class="icon">@</span>
+            <div><strong>Email</strong><p class="small" style="margin:0;">gideon.@theinnovationcentre.org</p></div>
+          </li>
+          <li class="item">
+            <span class="icon">☎</span>
+            <div><strong>Phone</strong><p class="small" style="margin:0;">+234 907 225 1917</p></div>
+          </li>
+          <li class="item">
+            <span class="icon">📍</span>
+            <div><strong>Base</strong><p class="small" style="margin:0;">Lagos, Nigeria</p></div>
+          </li>
+        </ul>
+        <div class="mt-2">
+          <h3 style="font-size:var(--step-1);">Office hours</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Day</th><th>Availability</th></tr></thead>
+              <tbody>
+                <tr><td>Mon – Fri</td><td>10:00 AM – 5:00 PM</td></tr>
+                <tr><td>Saturday</td><td>Academy sessions</td></tr>
+                <tr><td>Sunday</td><td>Unavailable</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p style="margin:0;">© <span id="year"></span> Gideon Tamunosiki Wakama.</p>
+    <div class="social-row">
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script src="home.js"></script>
+<script src="contact.js"></script>
+</body>
+</html>
