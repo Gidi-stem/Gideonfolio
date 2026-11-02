@@ -1,48 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const taskInput = document.getElementById('taskInput');
-    const addBtn = document.getElementById('addBtn');
-    const taskList = document.getElementById('taskList');
-// ---- Mobile nav toggle (event handling + DOM manipulation) ----
-const navToggle = document.getElementById('navToggle');
-const navMenu = document.getElementById('navMenu');
 
-if (navToggle && navMenu) {
-  navToggle.addEventListener('click', () => {
-    const isOpen = navMenu.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-  });
+  // ---- Footer year ----
+  document.querySelectorAll('#year').forEach(el => { el.textContent = new Date().getFullYear(); });
 
-  // Close the menu when a link is chosen (better mobile UX)
-  navMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
+  // ---- Mobile nav toggle ----
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
     });
-  });
-}
-    
-    addBtn.addEventListener('click', () => {
-        const taskText = taskInput.value;
-        if (taskText === '') return;
 
-        // Create elements
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <span>${taskText}</span>
-            <button class="complete-btn">Done</button>
-            <button class="delete-btn">Delete</button>
-        `;
-
-        // Add functionality
-        li.querySelector('.complete-btn').addEventListener('click', (e) => {
-            e.target.parentElement.classList.toggle('completed');
-        });
-
-        li.querySelector('.delete-btn').addEventListener('click', (e) => {
-            e.target.parentElement.remove();
-        });
-
-        taskList.appendChild(li);
-        taskInput.value = '';
+    // Close the menu when a link is chosen
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
     });
+  }
+
+  // ---- Skill bars (about page) ----
+  const skillCards = document.querySelectorAll('#skillsGrid .card[data-level]');
+  if (skillCards.length) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const fill = entry.target.querySelector('.skill-bar-fill');
+          if (fill) fill.style.width = Number(entry.target.dataset.level) + '%';
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    skillCards.forEach(card => observer.observe(card));
+  }
+
 });

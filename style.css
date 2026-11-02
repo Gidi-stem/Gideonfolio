@@ -621,3 +621,9 @@ input.invalid, textarea.invalid { border-color: var(--danger); box-shadow: 0 0 0
 .text-center { text-align: center; }
 .mt-2 { margin-top: 2rem; }
 .small { font-size: var(--step--1); color: var(--ink-soft); }
+
+/* ---------- Mobile overflow fix ---------- */
+/* Grid items default to min-width:auto, so a wide table inside one
+   stretches the whole column past the screen. min-width:0 lets the
+   column shrink and the .table-wrap scroll sideways instead. */
+.grid > *, .contact-grid > *, .hero-grid > * { min-width: 0; }
