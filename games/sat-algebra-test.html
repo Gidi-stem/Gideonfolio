@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital SAT Algebra Test | Wakama's ED Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout idea: sticky top bar; question card beside a numbered navigator; the graphing calculator slides in from the right. */
+:root{
+  --bg:#f2f5f9; --surface:#ffffff; --ink:#0d1b2a; --muted:#566678; --line:#d6dee8;
+  --accent:#0e6f73; --accent-ink:#ffffff; --accent-soft:#dff1f1;
+  --good:#1a7f4a; --good-soft:#dff3e8; --bad:#bf3a2c; --bad-soft:#fbe5e2; --mark:#f4b400; --mark-soft:#fff3cc;
+  --g-bg:#ffffff; --g-grid:#d9e0e9; --g-minor:#eef2f6; --g-axis:#55657a; --g-text:#44546a;
+  --display:'Bricolage Grotesque',system-ui,sans-serif; --body:'DM Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b131d; --surface:#122030; --ink:#e8eef6; --muted:#97a8bd; --line:#26364a;
+    --accent:#45c3c6; --accent-ink:#04222a; --accent-soft:#12383f;
+    --good:#4cc380; --good-soft:#12362a; --bad:#ff7d6e; --bad-soft:#3d1b19; --mark:#f4b400; --mark-soft:#3b3010;
+    --g-bg:#0f1b29; --g-grid:#2b3c52; --g-minor:#18283a; --g-axis:#9fb0c5; --g-text:#b4c2d4;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b131d; --surface:#122030; --ink:#e8eef6; --muted:#97a8bd; --line:#26364a;
+  --accent:#45c3c6; --accent-ink:#04222a; --accent-soft:#12383f;
+  --good:#4cc380; --good-soft:#12362a; --bad:#ff7d6e; --bad-soft:#3d1b19; --mark:#f4b400; --mark-soft:#3b3010;
+  --g-bg:#0f1b29; --g-grid:#2b3c52; --g-minor:#18283a; --g-axis:#9fb0c5; --g-text:#b4c2d4;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+sup{font-size:.7em;line-height:0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .12em;font-size:.92em}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .15em}
+.frac>span:last-child{padding:0 .15em}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none;color:var(--accent)}
+.brand b{display:block;font-family:var(--display);font-size:1.02rem;letter-spacing:.01em;white-space:nowrap}
+.brand small{display:block;color:var(--muted);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.pill{font-family:var(--mono);font-size:.9rem;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.btn{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:600;min-height:42px;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent}
+.btn.small{min-height:34px;padding:5px 10px;font-size:.88rem;border-radius:8px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.on{background:var(--accent-soft);border-color:var(--accent)}
+
+main{max-width:1180px;margin:0 auto;padding:22px 16px 64px}
+@media (min-width:1000px){ body.calc-open{padding-right:560px} }
+body.calc-open .layout{grid-template-columns:1fr}
+body.calc-open .ngrid{grid-template-columns:repeat(10,1fr)}
+
+/* start */
+.start{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+.start h1{font-size:clamp(2rem,4.2vw,3.1rem)}
+.lede{color:var(--muted);font-size:1.08rem;max-width:56ch;margin:12px 0 22px}
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.tcard h3{font-size:1.02rem;margin-bottom:8px}
+.tcard .range{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:600}
+.tcard ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:.92rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.panel label.l{display:block;font-weight:600;margin:0 0 6px;font-size:.92rem}
+.field{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);min-height:44px}
+.modes{display:grid;gap:10px;margin:16px 0 20px}
+.mode{display:flex;gap:12px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;width:100%}
+.mode[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.mode b{display:block}
+.mode span{color:var(--muted);font-size:.9rem}
+.dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--muted);flex:none;margin-top:3px}
+.mode[aria-pressed="true"] .dot{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%)}
+.tools-list{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px;color:var(--muted);font-size:.93rem}
+.tools-list li{display:flex;gap:10px}
+.tools-list li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--mark);flex:none;margin-top:8px}
+@media (max-width:860px){ .start{grid-template-columns:1fr} .topics{grid-template-columns:1fr} }
+
+/* test layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}
+@media (max-width:900px){ .layout{grid-template-columns:1fr} }
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;color:var(--muted);font-size:.88rem;margin-bottom:12px}
+.tag{font-family:var(--mono);font-size:.76rem;font-weight:600;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:3px 8px}
+.qtext{font-size:1.18rem;line-height:1.6;margin:0 0 18px;max-width:62ch}
+.choices{display:grid;gap:10px;margin:0 0 18px}
+.choice{display:flex;gap:14px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;min-height:54px;font-size:1.05rem}
+.choice .ltr{font-family:var(--mono);font-weight:600;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;flex:none;font-size:.9rem}
+.choice:hover{border-color:var(--accent)}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.choice[aria-pressed="true"] .ltr{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.choice.good{border-color:var(--good);background:var(--good-soft)}
+.choice.bad{border-color:var(--bad);background:var(--bad-soft)}
+.spr{margin:0 0 18px}
+.spr input{width:min(260px,100%);font-family:var(--mono);font-size:1.3rem;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg);min-height:54px}
+.spr small{display:block;color:var(--muted);margin-top:6px}
+.spr .echo{font-family:var(--mono);color:var(--accent);min-height:1.4em}
+.dtable{border-collapse:collapse;margin:0 0 18px;font-family:var(--mono);font-size:1rem}
+.dtable th,.dtable td{border:1px solid var(--line);padding:8px 18px;text-align:center}
+.dtable th{background:var(--bg);font-weight:600}
+.figbox{margin:0 0 16px;max-width:480px}
+.figbox canvas{display:block;width:100%;border:1px solid var(--line);border-radius:12px;touch-action:manipulation;cursor:crosshair;background:var(--g-bg)}
+.figbar{display:flex;align-items:center;gap:10px;margin-top:8px;font-family:var(--mono);font-size:.92rem;min-height:34px;flex-wrap:wrap}
+.figbar .readout{background:var(--mark-soft);border-radius:8px;padding:4px 10px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hints{display:grid;gap:10px;margin:16px 0 0}
+.hint{background:var(--mark-soft);border-left:4px solid var(--mark);border-radius:8px;padding:10px 14px}
+.hint b{font-family:var(--mono);font-size:.78rem;display:block;margin-bottom:2px}
+.banner{margin:16px 0 0;border-radius:10px;padding:10px 14px;font-weight:600}
+.banner.good{background:var(--good-soft);color:var(--good)}
+.banner.bad{background:var(--bad-soft);color:var(--bad)}
+.solution{margin:12px 0 0;background:var(--bg);border:1px dashed var(--muted);border-radius:10px;padding:12px 14px}
+.foot{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);flex-wrap:wrap}
+
+.nav .card{padding:16px}
+.nav h3{font-size:1rem;margin-bottom:10px}
+.ngrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:14px}
+.nbtn{position:relative;height:42px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);font-family:var(--mono);font-weight:600;font-size:.88rem}
+.nbtn.done{background:var(--accent-soft);border-color:var(--accent)}
+.nbtn.cur{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.nbtn.flag::after{content:"";position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:var(--mark);border:2px solid var(--surface)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:.8rem;margin:2px 0 14px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;border:1.5px solid var(--line);vertical-align:-1px;margin-right:5px}
+.legend i.d{background:var(--accent-soft);border-color:var(--accent)}
+.legend i.f{background:var(--mark);border-color:var(--mark);border-radius:50%}
+.sec-h{font-size:.76rem;font-family:var(--mono);color:var(--muted);margin:2px 0 7px;letter-spacing:.04em}
+
+/* review + results */
+.rv-list{display:grid;gap:8px;margin:14px 0}
+.rv-row{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.rv-row b{font-family:var(--mono);width:3ch}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+@media (max-width:700px){ .stats{grid-template-columns:repeat(2,1fr)} }
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat small{color:var(--muted);display:block;font-size:.82rem}
+.stat b{font-family:var(--display);font-size:1.9rem}
+.skills{display:grid;gap:8px;margin:12px 0 4px}
+.skill{display:grid;grid-template-columns:minmax(140px,230px) 1fr 60px;gap:12px;align-items:center;font-size:.93rem}
+.bar{height:12px;border-radius:99px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.bar i.low{background:var(--bad)}
+.bar i.mid{background:var(--mark)}
+@media (max-width:600px){ .skill{grid-template-columns:1fr 1fr 52px} }
+details.rv{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0}
+details.rv summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:center;list-style:none}
+details.rv summary::-webkit-details-marker{display:none}
+details.rv .st{font-weight:700;font-family:var(--mono);font-size:.8rem;border-radius:6px;padding:2px 8px}
+details.rv .st.ok{background:var(--good-soft);color:var(--good)}
+details.rv .st.no{background:var(--bad-soft);color:var(--bad)}
+details.rv .body{padding:0 16px 14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.rtxt{width:100%;min-height:150px;font-family:var(--mono);font-size:.82rem;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--bg)}
+
+/* calculator drawer */
+.calc{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(0,0,0,.12);z-index:40;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .22s ease;visibility:hidden}
+.calc.open{transform:none;visibility:visible}
+@media (prefers-reduced-motion:reduce){ .calc{transition:none} }
+.calc-h{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.calc-h h2{font-size:1.05rem;white-space:nowrap}
+.calc-h .btn{white-space:nowrap}
+@media (max-width:520px){ .calc-h h2{font-size:.95rem} #calcReset{padding:5px 8px} }
+.calc-h .sp{margin-left:auto}
+.calc-tip{background:var(--mark-soft);border-left:4px solid var(--mark);padding:8px 14px;font-size:.9rem}
+.calc-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.gwrap{position:relative;flex:none;height:min(46vh,380px);min-height:230px;border-bottom:1px solid var(--line)}
+.gwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;display:block}
+.gtools{position:absolute;right:10px;top:10px;display:grid;gap:6px;z-index:2}
+.gtools button{width:38px;height:38px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);font-weight:700;font-size:1.1rem;display:grid;place-items:center;padding:0}
+.gtools button:hover{border-color:var(--accent)}
+.readbar{display:flex;gap:14px;flex-wrap:wrap;padding:6px 14px;font-family:var(--mono);font-size:.84rem;border-bottom:1px solid var(--line);background:var(--bg);min-height:34px}
+.readbar .sel{color:var(--accent);font-weight:600}
+.tabs{display:flex;gap:4px;padding:8px 10px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:none;background:transparent;padding:9px 12px;border-bottom:3px solid transparent;font-weight:600;color:var(--muted);white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tabpane{padding:14px;display:none}
+.tabpane.on{display:block}
+.erow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.sw{width:14px;height:34px;border-radius:5px;flex:none}
+.erow input{flex:1;min-width:0;font-family:var(--mono);border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--bg);min-height:42px}
+.erow .del{border:none;background:transparent;font-size:1.3rem;color:var(--muted);width:34px;height:34px}
+.err{color:var(--bad);font-size:.82rem;margin:-4px 0 8px 22px}
+.sliders{display:grid;gap:8px;margin-top:10px}
+.srow{display:grid;grid-template-columns:auto 1fr 84px;gap:10px;align-items:center;font-family:var(--mono)}
+.srow input[type=number]{border:1.5px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--bg);width:100%;min-height:36px}
+.srow input[type=range]{width:100%;accent-color:var(--accent)}
+.help{color:var(--muted);font-size:.86rem;margin:10px 0 0}
+.tbl{border-collapse:collapse;font-family:var(--mono);width:100%;margin-top:10px}
+.tbl th,.tbl td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+.tbl input{width:100%;border:none;background:transparent;text-align:center;font-family:var(--mono);min-height:34px}
+.tbl th{background:var(--bg)}
+.poi-i{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.9rem;flex-wrap:wrap}
+.poi-i .k{color:var(--muted);font-family:var(--body);font-size:.8rem;min-width:92px}
+.poi-i .btn{margin-left:auto}
+.res{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;font-family:var(--mono);font-size:.9rem;display:grid;gap:3px}
+.res b{color:var(--accent)}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid4 label{font-size:.85rem;color:var(--muted)}
+.grid4 input{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--bg);font-family:var(--mono);min-height:42px}
+.pts{width:100%;min-height:96px;font-family:var(--mono);border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--bg)}
+.calc-f{padding:10px 14px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+.calc-f a{color:var(--accent)}
+.hide{display:none!important}
+@media (max-width:520px){ .top-in{gap:8px} .brand small{display:none} .btn span.lbl{display:none} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="31" height="31" rx="8" stroke="currentColor" stroke-width="2.4"/><path d="M7 27 L27 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="14" cy="20" r="2.6" fill="currentColor"/></svg>
+      <div><b>Wakama's ED Games</b><small id="topSub">Digital SAT Algebra · Topics 1–2</small></div>
+    </div>
+    <div class="top-r">
+      <span class="pill hide" id="progPill" title="Questions answered"></span>
+      <span class="pill hide num" id="clock" title="Time on test">00:00</span>
+      <button class="btn hide" id="calcBtn" aria-expanded="false" aria-controls="calc">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 18V2M2 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 14c3-9 6-2 9-8l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="lbl">Calculator</span>
+      </button>
+    </div>
+  </div>
+</header>
+<main id="main"></main>
+
+<aside class="calc" id="calc" aria-label="Graphing calculator">
+  <div class="calc-h">
+    <h2>Graphing calculator</h2>
+    <span class="tag" id="calcQ"></span>
+    <button class="btn small sp" id="calcReset" title="Restore this question's setup">Reset setup</button>
+    <button class="btn small" id="calcClose" aria-label="Close calculator">Close</button>
+  </div>
+  <div class="calc-tip" id="calcTip"></div>
+  <div class="calc-body">
+    <div class="gwrap" id="gwrap">
+      <canvas id="gcv" aria-label="Graph. Click or tap to mark a point."></canvas>
+      <div class="gtools">
+        <button id="zIn" aria-label="Zoom in">+</button>
+        <button id="zOut" aria-label="Zoom out">−</button>
+        <button id="zHome" aria-label="Reset view" title="Reset view"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l7-6 7 6M4 8v7h10V8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
+        <button id="zSq" aria-label="Make grid squares equal" title="Equal axis scale"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h12M9 3v12" stroke="currentColor" stroke-width="1.2"/></svg></button>
+      </div>
+    </div>
+    <div class="readbar"><span id="cursorRead">Move over the graph</span><span class="sel" id="selRead">Click the graph to mark a point</span></div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" data-tab="expr" aria-selected="true">Equations</button>
+      <button class="tab" role="tab" data-tab="table" aria-selected="false">Table</button>
+      <button class="tab" role="tab" data-tab="fit" aria-selected="false">Fit line</button>
+      <button class="tab" role="tab" data-tab="two" aria-selected="false">Two points</button>
+      <button class="tab" role="tab" data-tab="poi" aria-selected="false">Points</button>
+    </div>
+    <div class="tabpane on" data-pane="expr" id="paneExpr"></div>
+    <div class="tabpane" data-pane="table" id="paneTable"></div>
+    <div class="tabpane" data-pane="fit" id="paneFit"></div>
+    <div class="tabpane" data-pane="two" id="paneTwo"></div>
+    <div class="tabpane" data-pane="poi" id="panePoi"></div>
+  </div>
+  <div class="calc-f">Type equations like <b>y=2x+3</b>, <b>3x+4y=24</b>, <b>x=5</b>, <b>abs(x-3)</b> or a point like <b>(2,5)</b>. A letter such as a or m becomes a slider. <a href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open the real Desmos</a> in a new tab.</div>
+</aside>
+
+<script>
+/* Question bank: Digital SAT Algebra, Topics 1-2. Text uses {a|b} for fractions and ^{n} for exponents. */
+const QUESTIONS = [
+/* ---------------- TOPIC 1: Single-variable linear equations & expressions ---------------- */
+{id:1,sec:1,sub:'Basic equations',type:'mc',
+ q:`Solve 3(2x − 4) = 18. What is the value of x?`,
+ ch:['3','4','5','6'],ans:2,
+ hints:[`Divide both sides by 3 first, or distribute the 3. Either way, get the x term by itself.`,`After dividing by 3 you have 2x − 4 = 6. Add 4, then divide by 2.`],
+ exp:`3(2x − 4) = 18 → 2x − 4 = 6 → 2x = 10 → x = 5.`,
+ calc:{exprs:['y=3(2x-4)','y=18'],view:[-4,10,-8,30],tip:`Graph each side as its own line. The x-coordinate where they cross is the solution. Click the crossing.`}},
+{id:2,sec:1,sub:'Basic equations',type:'mc',
+ q:`Solve 4(x + 3) − 2x = 5x − 9. What is the value of x?`,
+ ch:['4','5','6','7'],ans:3,
+ hints:[`Distribute the 4, then combine the x terms on the left side.`,`You should get 2x + 12 = 5x − 9. Put the x terms on one side and the numbers on the other.`],
+ exp:`4x + 12 − 2x = 5x − 9 → 2x + 12 = 5x − 9 → 21 = 3x → x = 7.`,
+ calc:{exprs:['y=4(x+3)-2x','y=5x-9'],view:[-4,12,-14,44],tip:`Graph the left side and the right side, then click where they meet.`}},
+{id:3,sec:1,sub:'Expression shortcuts',type:'spr',
+ q:`If 2x + 5 = 17, what is the value of 6x + 15?`,
+ ans:51,
+ hints:[`You do not have to find x first. Compare 6x + 15 with 2x + 5. What do you multiply 2x + 5 by to get 6x + 15?`,`6x + 15 = 3(2x + 5).`],
+ exp:`6x + 15 = 3(2x + 5) = 3(17) = 51. Check: x = 6, so 6(6) + 15 = 51.`,
+ calc:{exprs:['y=2x+5','y=17'],view:[-2,10,-4,26],tip:`Find x from the crossing, then type 6x+15 on a new line and read it with the Table tab.`}},
+{id:4,sec:1,sub:'Expression shortcuts',type:'mc',
+ q:`If 5x − 3 = 12, what is the value of 10x − 4?`,
+ ch:['20','26','30','36'],ans:1,
+ hints:[`Try to write 10x − 4 using the group 5x − 3.`,`10x − 4 = 2(5x − 3) + 2.`],
+ exp:`10x − 4 = 2(5x − 3) + 2 = 2(12) + 2 = 26. (Or: 5x = 15, x = 3, so 10(3) − 4 = 26.)`,
+ calc:{exprs:['y=5x-3','y=12'],view:[-2,8,-8,20],tip:`Click the crossing to get x, then evaluate 10x−4.`}},
+{id:5,sec:1,sub:'Fractional equations',type:'spr',
+ q:`{x + 3|4} = {x − 1|2}. What is the value of x?`,
+ ans:5,
+ hints:[`Multiply both sides by 4 to clear the denominators, or cross-multiply.`,`You get x + 3 = 2(x − 1).`],
+ exp:`x + 3 = 2x − 2 → 5 = x. Check: (5 + 3)/4 = 2 and (5 − 1)/2 = 2.`,
+ calc:{exprs:['y=(x+3)/4','y=(x-1)/2'],view:[-4,10,-4,6],tip:`Graph both fractions as lines and click the crossing.`}},
+{id:6,sec:1,sub:'Fractional equations',type:'mc',
+ q:`{2x|3} + {x|2} = 14. What is the value of x?`,
+ ch:['8','12','10','14'],ans:1,
+ hints:[`The denominators are 3 and 2. Multiply every term by their least common multiple.`,`Multiply by 6: 4x + 3x = 84.`],
+ exp:`6·{2x|3} = 4x, 6·{x|2} = 3x and 6·14 = 84. So 7x = 84 and x = 12.`,
+ calc:{exprs:['y=2x/3+x/2','y=14'],view:[-4,20,-4,20],tip:`Type the left side exactly as written and click where it reaches 14.`}},
+{id:7,sec:1,sub:'Combining like terms',type:'mc',
+ q:`Which expression is equivalent to 3(2x − 5) − 4(x − 2)?`,
+ ch:['2x − 7','2x − 23','10x − 23','10x − 7'],ans:0,
+ hints:[`Distribute 3, then distribute −4. Careful: −4 times −2 is positive.`,`6x − 15 − 4x + 8. Now combine the x terms and the numbers.`],
+ exp:`3(2x − 5) − 4(x − 2) = 6x − 15 − 4x + 8 = 2x − 7.`,
+ calc:{exprs:['y=3(2x-5)-4(x-2)','y=2x-7'],view:[-6,6,-20,12],tip:`Equivalent expressions give graphs that sit exactly on top of each other. Type each choice as a new line and compare.`}},
+{id:8,sec:1,sub:'Combining like terms',type:'spr',
+ q:`5(x + 2) − 3(x − 4) − 2x = c is true for all values of x. What is the value of c?`,
+ ans:22,
+ hints:[`Distribute each product, then group the x terms and the plain numbers separately.`,`The x terms are 5x − 3x − 2x. What do they add to?`],
+ exp:`5x + 10 − 3x + 12 − 2x = (5 − 3 − 2)x + 22 = 22. The x terms cancel, so c = 22.`,
+ calc:{exprs:['y=5(x+2)-3(x-4)-2x'],view:[-6,6,-4,40],tip:`A flat line means the expression is a constant. Click the line to read it.`}},
+{id:9,sec:1,sub:'No solution',type:'mc',
+ q:`For what value of a does 4(x + 2) = ax + 11 have no solution?`,
+ ch:['3','8','4','11'],ans:2,
+ hints:[`No solution means the two lines are parallel: same slope, different y-intercept.`,`The left side is 4x + 8. What must a be so the x terms match while 8 and 11 stay different?`],
+ exp:`4x + 8 = ax + 11. If a = 4, subtracting 4x gives 8 = 11, which is false, so there is no solution. For any other a there is exactly one solution.`,
+ calc:{exprs:['y=4(x+2)','y=ax+11'],view:[-6,6,-10,30],tip:`Drag the slider for a. Which value makes the lines parallel so they never cross?`}},
+{id:10,sec:1,sub:'No solution',type:'mc',
+ q:`How many solutions does 5x − 4 = 5(x − 1) + 2 have?`,
+ ch:['No solution','Exactly one solution','Exactly two solutions','Infinitely many solutions'],ans:0,
+ hints:[`Simplify the right side first.`,`5(x − 1) + 2 = 5x − 3. Compare 5x − 4 with 5x − 3.`],
+ exp:`The right side is 5x − 5 + 2 = 5x − 3. Subtracting 5x from both sides gives −4 = −3, which is false. No solution (parallel lines).`,
+ calc:{exprs:['y=5x-4','y=5(x-1)+2'],view:[-4,6,-24,30],tip:`Parallel lines never cross.`}},
+{id:11,sec:1,sub:'Infinitely many solutions',type:'spr',
+ q:`4(3x − 2) = ax + b has infinitely many solutions, where a and b are constants. What is the value of a + b?`,
+ ans:4,
+ hints:[`Infinitely many solutions means both sides are the same expression. Expand the left side.`,`4(3x − 2) = 12x − 8. Match it with ax + b.`],
+ exp:`4(3x − 2) = 12x − 8, so a = 12 and b = −8. Then a + b = 4.`,
+ calc:{exprs:['y=4(3x-2)','y=ax+b'],view:[-4,6,-40,40],tip:`Slide (or type) a and b until the second line sits exactly on top of the first.`}},
+{id:12,sec:1,sub:'Infinitely many solutions',type:'mc',
+ q:`In the equation 2(3x + k) = 6x + 14, k is a constant. If the equation has infinitely many solutions, what is the value of k?`,
+ ch:['14','12','3.5','7'],ans:3,
+ hints:[`Expand the left side, then compare the constants.`,`2(3x + k) = 6x + 2k. Set 2k equal to 14.`],
+ exp:`6x + 2k = 6x + 14 → 2k = 14 → k = 7.`,
+ calc:{exprs:['y=2(3x+k)','y=6x+14'],view:[-4,4,-10,40],tip:`Move the slider for k until the two lines overlap.`}},
+{id:13,sec:1,sub:'Absolute value',type:'mc',
+ q:`What is the sum of all solutions to |x − 3| = 7?`,
+ ch:['−4','10','14','6'],ans:3,
+ hints:[`Absolute value splits into two cases: x − 3 = 7 and x − 3 = −7.`,`Solve each case, then add the two answers.`],
+ exp:`x − 3 = 7 gives x = 10. x − 3 = −7 gives x = −4. The sum is 10 + (−4) = 6. Shortcut: the solutions sit the same distance on either side of 3, so they add to 2·3 = 6.`,
+ calc:{exprs:['y=abs(x-3)','y=7'],view:[-8,14,-2,10],tip:`Click both crossings and add the x-coordinates.`}},
+{id:14,sec:1,sub:'Absolute value',type:'mc',
+ q:`How many solutions does |2x + 1| + 4 = 1 have?`,
+ ch:['0','1','2','Infinitely many'],ans:0,
+ hints:[`Get the absolute value by itself first.`,`|2x + 1| = −3. Can an absolute value ever be negative?`],
+ exp:`|2x + 1| = −3 has no solution because an absolute value is never negative. The graph of y = |2x + 1| + 4 never drops below 4, so it never reaches y = 1.`,
+ calc:{exprs:['y=abs(2x+1)+4','y=1'],view:[-6,6,-2,14],tip:`Look for a crossing. Is there one?`}},
+{id:15,sec:1,sub:'Radical equations',type:'mc',
+ q:`Which choice gives all solutions of √(x + 6) = x?`,
+ ch:['x = 3 only','x = −2 only','x = −2 and x = 3','There is no solution'],ans:0,
+ hints:[`Square both sides, solve the quadratic, then check each answer in the original equation.`,`x + 6 = x² gives x² − x − 6 = 0. Test both roots in √(x + 6) = x.`],
+ exp:`x² − x − 6 = (x − 3)(x + 2) = 0, so x = 3 or x = −2. For x = 3: √9 = 3 ✓. For x = −2: √4 = 2, not −2, so −2 is extraneous. Only x = 3 works.`,
+ calc:{exprs:['y=sqrt(x+6)','y=x'],view:[-7,8,-4,8],tip:`Real solutions are crossings of the two graphs. Count them and read their x-values.`}},
+{id:16,sec:1,sub:'Radical equations',type:'spr',
+ q:`√(2x − 1) + 3 = 8. What is the value of x?`,
+ ans:13,
+ hints:[`Get the square root alone first by subtracting 3.`,`√(2x − 1) = 5. Now square both sides.`],
+ exp:`√(2x − 1) = 5 → 2x − 1 = 25 → x = 13. Check: √25 + 3 = 8 ✓.`,
+ calc:{exprs:['y=sqrt(2x-1)+3','y=8'],view:[-2,20,-2,12],tip:`Click the crossing of the curve and the line y = 8.`}},
+{id:17,sec:1,sub:'Rational equations',type:'mc',
+ q:`What is the solution to {x^{2} − 25|x − 5} = 12?`,
+ ch:['7','5','12','17'],ans:0,
+ hints:[`Factor the numerator. x² − 25 is a difference of squares.`,`(x − 5)(x + 5) divided by (x − 5) is x + 5, as long as x ≠ 5.`],
+ exp:`{x^{2} − 25|x − 5} = x + 5 for x ≠ 5. So x + 5 = 12 and x = 7, which is allowed.`,
+ calc:{exprs:['y=(x^2-25)/(x-5)','y=12'],view:[-4,14,-6,20],tip:`Click the crossing. The graph has a hole at x = 5. Can you spot it?`}},
+{id:18,sec:1,sub:'Rational equations',type:'mc',
+ q:`Which statement is true about {x|x − 2} = {2|x − 2} + 3?`,
+ ch:['Every real number except 2 is a solution.','x = 2 is the only solution.','The equation has no solution.','x = 5 is the only solution.'],ans:2,
+ hints:[`Both fractions have x − 2 on the bottom. Subtract {2|x − 2} from both sides.`,`{x − 2|x − 2} equals 1 whenever x ≠ 2. So what does the equation say?`],
+ exp:`{x|x − 2} − {2|x − 2} = {x − 2|x − 2} = 1 for x ≠ 2, so the equation becomes 1 = 3, which is false. Cross-multiplying gives x = 2, but that makes a denominator 0, so it is extraneous. No solution.`,
+ calc:{exprs:['y=x/(x-2)','y=2/(x-2)+3'],view:[-6,10,-8,10],tip:`The two curves never meet. That means no solution.`}},
+{id:19,sec:1,sub:'Word problems',type:'spr',
+ q:`A gym charges a one-time $45 sign-up fee plus $28 per month. A member has paid $213 in total. For how many months has the member paid the monthly fee?`,
+ ans:6,
+ hints:[`Total = fixed fee + rate × months. Write that as an equation with m for months.`,`45 + 28m = 213. Subtract 45 first.`],
+ exp:`45 + 28m = 213 → 28m = 168 → m = 6.`,
+ calc:{exprs:['y=45+28x','y=213'],view:[-1,12,0,320],tip:`Here x is the number of months. Click where the total reaches 213.`}},
+{id:20,sec:1,sub:'Word problems',type:'mc',
+ q:`A tutor charges $20 for the first hour and $15 for each additional hour. A session costs $95 in total. How many hours long was the session?`,
+ ch:['5','6','7','8'],ans:1,
+ hints:[`Only the hours after the first cost $15. If the session lasted h hours, how many are "additional"?`,`20 + 15(h − 1) = 95.`],
+ exp:`20 + 15(h − 1) = 95 → 15(h − 1) = 75 → h − 1 = 5 → h = 6.`,
+ calc:{exprs:['y=20+15(x-1)','y=95'],view:[0,10,0,120],tip:`Here x is the number of hours. Click where the cost hits 95.`}},
+
+/* ---------------- TOPIC 2: Two-variable linear equations, functions, slope & graphs ---------------- */
+{id:21,sec:2,sub:'Function notation',type:'mc',
+ q:`The function f is defined by f(x) = 2x + 9. What is the value of f(−3)?`,
+ ch:['−15','−3','3','15'],ans:2,
+ hints:[`Replace every x with −3. Keep the parentheses.`,`2(−3) + 9.`],
+ exp:`f(−3) = 2(−3) + 9 = −6 + 9 = 3.`,
+ calc:{exprs:['y=2x+9'],view:[-6,6,-6,22],tab:'table',tableX:[-3,-2,-1,0,1,2,3],tip:`Open the Table tab and look at the row where x = −3.`}},
+{id:22,sec:2,sub:'Function notation',type:'spr',
+ q:`The function f is defined by f(x) = 4x − 5. If f(a) = 19, what is the value of a?`,
+ ans:6,
+ hints:[`f(a) = 19 means 4a − 5 = 19.`,`Add 5 to both sides, then divide by 4.`],
+ exp:`4a − 5 = 19 → 4a = 24 → a = 6.`,
+ calc:{exprs:['y=4x-5','y=19'],view:[-2,10,-8,26],tip:`Find where the graph of f is at height 19.`}},
+{id:23,sec:2,sub:'Function notation',type:'mc',
+ q:`The function f is defined by f(x) = 3x + 2. What is f(x + 1) − f(x)?`,
+ ch:['1','3','2','5'],ans:1,
+ hints:[`Replace x with (x + 1) in the rule for f, then subtract f(x).`,`3(x + 1) + 2 − (3x + 2). Many terms cancel.`],
+ exp:`f(x + 1) = 3x + 3 + 2 = 3x + 5, and f(x) = 3x + 2. The difference is 3, which is the slope. For any linear function, f(x + 1) − f(x) equals the slope.`,
+ calc:{exprs:['y=3x+2','y=3(x+1)+2'],view:[-4,4,-8,18],tip:`Compare the heights of the two lines at the same x. How far apart are they vertically?`}},
+{id:24,sec:2,sub:'Writing line equations',type:'mc',
+ q:`A line has slope −3 and passes through the point (2, 5). Which equation represents the line?`,
+ ch:['y = −3x − 1','y = −3x + 5','y = 3x − 1','y = −3x + 11'],ans:3,
+ hints:[`Start with y = −3x + b and use the point (2, 5) to find b.`,`5 = −3(2) + b.`],
+ exp:`5 = −6 + b → b = 11. The line is y = −3x + 11.`,
+ calc:{exprs:['(2,5)'],view:[-6,10,-10,18],tip:`Type each answer choice on its own line. The correct line passes through the plotted point.`}},
+{id:25,sec:2,sub:'Writing line equations',type:'spr',
+ q:`A line in the xy-plane passes through the points (1, 4) and (3, 10). What is the y-intercept of the line?`,
+ ans:1,
+ hints:[`Find the slope first: rise over run between the two points.`,`Slope = (10 − 4)/(3 − 1) = 3. Put (1, 4) into y = 3x + b.`],
+ exp:`m = 6/2 = 3. Then 4 = 3(1) + b, so b = 1. The line is y = 3x + 1.`,
+ calc:{exprs:['(1,4)','(3,10)'],view:[-4,8,-4,14],tab:'fit',pts:'1,4\n3,10',tip:`Try the Fit line tab, or the Two points tab, to get the slope and intercept.`}},
+{id:26,sec:2,sub:'Parallel lines',type:'mc',
+ q:`Line k is parallel to the line y = {2|3}x − 5 and passes through the point (6, 1). Which equation represents line k?`,
+ ch:['y = {2|3}x + 1','y = −{3|2}x + 10','y = {2|3}x − 3','y = {2|3}x − 5'],ans:2,
+ hints:[`Parallel lines share the same slope. What is the slope of y = {2|3}x − 5?`,`Put (6, 1) into y = {2|3}x + b and solve for b.`],
+ exp:`m = {2|3}. Then 1 = {2|3}(6) + b = 4 + b, so b = −3. The line is y = {2|3}x − 3.`,
+ calc:{exprs:['y=(2/3)x-5','(6,1)'],view:[-8,14,-10,8],tip:`Type each choice. The right one has the same tilt and goes through (6, 1).`}},
+{id:27,sec:2,sub:'Parallel lines',type:'spr',
+ q:`The line 6x + 2y = 9 is parallel to the line y = mx + 4. What is the value of m?`,
+ ans:-3,
+ hints:[`Rewrite 6x + 2y = 9 as y = mx + b by solving for y.`,`2y = −6x + 9. Now divide everything by 2.`],
+ exp:`y = −3x + {9|2}, so the slope is −3. Parallel lines have equal slopes, so m = −3. Shortcut: slope = −A/B = −6/2 = −3.`,
+ calc:{exprs:['6x+2y=9'],view:[-4,6,-8,12],tab:'two',tip:`The calculator can graph equations in standard form. Click two points on the line, then use the Two points tab.`}},
+{id:28,sec:2,sub:'Perpendicular lines',type:'spr',
+ q:`Line m is perpendicular to the line y = 4x + 1 and passes through the point (8, 3). What is the x-coordinate of the point where line m crosses the x-axis?`,
+ ans:20,
+ hints:[`A perpendicular slope is the negative reciprocal of 4. What is it?`,`Use slope −{1|4} and the point (8, 3) to find b. Then set y = 0.`],
+ exp:`m = −{1|4}. Then 3 = −{1|4}(8) + b, so b = 5 and y = −{x|4} + 5. Setting y = 0 gives x = 20.`,
+ calc:{exprs:['y=4x+1','(8,3)','y=m(x-8)+3'],view:[-10,28,-8,14],params:{m:1},tip:`Type −0.25 in the box for m, then click where the new line crosses the x-axis.`}},
+{id:29,sec:2,sub:'Perpendicular lines',type:'mc',
+ q:`Line p is defined by 3x − 5y = 15. Line q is perpendicular to line p. What is the slope of line q?`,
+ ch:['−{5|3}','−{3|5}','{3|5}','{5|3}'],ans:0,
+ hints:[`Find the slope of line p first. Solve for y, or use −A/B.`,`The slope of p is {3|5}. Flip it and change the sign.`],
+ exp:`3x − 5y = 15 → y = {3|5}x − 3, so the slope of p is {3|5}. The perpendicular slope is −{5|3}.`,
+ calc:{exprs:['3x-5y=15'],view:[-8,10,-8,6],tab:'two',tip:`Graph it, click two points, and use the Two points tab for the slope of p. Then flip and negate.`}},
+{id:30,sec:2,sub:'Tables & linear functions',type:'spr',
+ q:`The table shows values of the linear function f. What is the value of f(10)?`,
+ table:{x:[1,2,3,4],y:[7,11,15,19]},
+ ans:43,
+ hints:[`How much does f(x) change each time x goes up by 1?`,`The slope is 4. Use f(1) = 7 to find b.`],
+ exp:`m = 4 and 7 = 4(1) + b, so b = 3 and f(x) = 4x + 3. Then f(10) = 43.`,
+ calc:{exprs:['(1,7)','(2,11)','(3,15)','(4,19)'],view:[-2,12,-4,50],tab:'fit',pts:'1,7\n2,11\n3,15\n4,19',tip:`Use the Fit line tab to get the rule, then check it in the Table tab at x = 10.`}},
+{id:31,sec:2,sub:'Tables & linear functions',type:'mc',
+ q:`The linear function g satisfies g(2) = 5 and g(6) = 17. What is the value of g(10)?`,
+ ch:['23','26','29','32'],ans:2,
+ hints:[`Slope = change in g ÷ change in x.`,`The slope is (17 − 5)/(6 − 2) = 3. From x = 6 to x = 10 is 4 steps.`],
+ exp:`m = 12/4 = 3. g(10) = 17 + 3(4) = 29.`,
+ calc:{exprs:['(2,5)','(6,17)'],view:[-2,12,-6,36],tab:'fit',pts:'2,5\n6,17',tip:`Fit a line through both points, then evaluate it at x = 10 in the Table tab.`}},
+{id:32,sec:2,sub:'Tables & linear functions',type:'mc',
+ q:`The table shows values of x and y that satisfy a linear relationship. Which equation represents the relationship?`,
+ table:{x:[0,3,6,9],y:[12,18,24,30]},
+ ch:['y = 3x + 12','y = 2x + 12','y = 6x + 12','y = 12x + 2'],ans:1,
+ hints:[`At x = 0 the table gives you b directly. Then find the slope.`,`b = 12 and the slope is (18 − 12)/3.`],
+ exp:`The y-intercept is 12 (x = 0). The slope is 6/3 = 2. So y = 2x + 12. Check (9, 30): 2(9) + 12 = 30 ✓.`,
+ calc:{exprs:['(0,12)','(3,18)','(6,24)','(9,30)'],view:[-2,12,0,36],tab:'fit',pts:'0,12\n3,18\n6,24\n9,30',tip:`The Fit line tab finds the equation. Compare it with the choices.`}},
+{id:33,sec:2,sub:'Coordinate geometry',type:'spr',
+ q:`A line in the xy-plane passes through (2, −1) and (8, 11). If the point (5, n) is also on the line, what is the value of n?`,
+ ans:5,
+ hints:[`Find the slope from the two given points.`,`The slope is 12/6 = 2. How far does x move from 2 to 5, and how far does y move?`],
+ exp:`m = (11 − (−1))/(8 − 2) = 2. From x = 2 to x = 5, x increases by 3, so y increases by 6: n = −1 + 6 = 5.`,
+ calc:{exprs:['(2,-1)','(8,11)'],view:[-4,12,-6,16],tab:'two',tip:`Use the Two points tab to get the line, then plot it and click at x = 5.`}},
+{id:34,sec:2,sub:'Coordinate geometry',type:'spr',
+ q:`The graph of 3x + 4y = 24 in the xy-plane contains the point (n, 3). What is the value of n?`,
+ ans:4,
+ hints:[`The point (n, 3) means x = n and y = 3. Substitute y = 3.`,`3n + 4(3) = 24.`],
+ exp:`3n + 12 = 24 → 3n = 12 → n = 4.`,
+ calc:{exprs:['3x+4y=24','y=3'],view:[-4,12,-4,10],tip:`Click where the line meets y = 3.`}},
+{id:35,sec:2,sub:'Reading graphs',type:'mc',
+ q:`The graph of a line is shown. Which equation represents the line? Tap the graph to read coordinates.`,
+ fig:{exprs:['y=1.5x+2'],view:[-6,6,-4,10]},
+ ch:['y = {3|2}x + 2','y = {2|3}x + 2','y = {3|2}x + 4','y = 2x + {3|2}'],ans:0,
+ hints:[`Read the y-intercept where the line crosses the y-axis, then tap a second point.`,`Tap a point that sits exactly on a grid crossing, then use rise ÷ run from the y-intercept.`],
+ exp:`The line crosses the y-axis at (0, 2) and passes through (2, 5). The slope is {3|2}, so y = {3|2}x + 2.`,
+ calc:{exprs:[''],view:[-6,6,-4,10],tab:'two',tip:`Read two points from the figure, then use the Two points tab. Test each choice by typing it here.`}},
+{id:36,sec:2,sub:'Reading graphs',type:'spr',
+ q:`The graph of a line is shown. What is the slope of the line? Tap the graph to read coordinates.`,
+ fig:{exprs:['y=2x+6'],view:[-7,4,-4,10]},
+ ans:2,
+ hints:[`Tap two points on the line, ideally where it crosses the axes.`,`Slope = (change in y) ÷ (change in x) between those two points.`],
+ exp:`The line passes through (−3, 0) and (0, 6). The slope is 6/3 = 2.`,
+ calc:{exprs:[''],view:[-7,4,-4,10],tab:'two',tip:`Enter the two points you read from the figure into the Two points tab.`}},
+{id:37,sec:2,sub:'Reading graphs',type:'spr',
+ q:`The graph of the linear function f is shown. What is the value of f(−4)? Tap the graph to read coordinates.`,
+ fig:{exprs:['y=-0.5x+4'],view:[-8,12,-2,10]},
+ ans:6,
+ hints:[`f(−4) is the y-value of the point where x = −4.`,`Go to the vertical grid line x = −4 and read the height of the line there.`],
+ exp:`The line passes through (−4, 6), so f(−4) = 6. The equation is f(x) = −{x|2} + 4.`,
+ calc:{exprs:[''],view:[-8,12,-2,10],tip:`Use the figure on the question page to read the point.`}},
+{id:38,sec:2,sub:'Modeling with lines',type:'spr',
+ q:`A plumber charges a fixed fee plus an hourly rate. A 2-hour job costs $130 and a 5-hour job costs $265. The total charge is a linear function of the hours worked. What is the plumber's fixed fee, in dollars?`,
+ ans:40,
+ hints:[`The hourly rate is the slope. Find it from the two jobs.`,`slope = (265 − 130)/(5 − 2) = 45. Then 130 = 45(2) + fee.`],
+ exp:`m = 135/3 = 45 dollars per hour. Then 130 = 45(2) + b, so b = 40. The fixed fee is $40.`,
+ calc:{exprs:['(2,130)','(5,265)'],view:[-1,10,-20,420],tab:'fit',pts:'2,130\n5,265',tip:`Fit a line through the two jobs. The y-intercept is the fixed fee.`}},
+{id:39,sec:2,sub:'Modeling with lines',type:'mc',
+ q:`A candle burns at a constant rate. Its height h, in centimeters, after burning for t hours is modeled by h(t) = 20 − 0.5t. Which statement is the best interpretation of the number 0.5 in the model?`,
+ ch:['The candle is 0.5 cm tall when first lit.','The candle\'s height decreases by 0.5 cm each hour.','The candle burns out after 0.5 hours.','The candle\'s height after 1 hour is 0.5 cm.'],ans:1,
+ hints:[`In h(t) = 20 − 0.5t, what happens to h each time t goes up by 1?`,`The coefficient of t is the rate of change. The minus sign means the height is going down.`],
+ exp:`The slope is −0.5 cm per hour, so the candle gets 0.5 cm shorter every hour. The 20 is the starting height.`,
+ calc:{exprs:['y=20-0.5x'],view:[-2,44,-2,24],tip:`Here x is t. Click the line at x = 0, 2 and 4 and watch how the height changes.`}},
+{id:40,sec:2,sub:'Mixed practice',type:'mc',
+ q:`Line ℓ crosses the y-axis at (0, −3) and is perpendicular to the line 2x + 3y = 12. Which of the following points lies on line ℓ?`,
+ ch:['(2, 1)','(6, 12)','(0, 3)','(4, 3)'],ans:3,
+ hints:[`Find the slope of 2x + 3y = 12, then flip it and change the sign.`,`The slope of ℓ is {3|2} and its y-intercept is −3. Test each point in y = {3|2}x − 3.`],
+ exp:`2x + 3y = 12 has slope −{2|3}, so ℓ has slope {3|2}: y = {3|2}x − 3. At x = 4, y = 3 ✓. The others fail: (2, 1) gives 0, (6, 12) gives 6, (0, 3) gives −3.`,
+ calc:{exprs:['2x+3y=12','(0,-3)','y=mx-3'],view:[-8,10,-8,8],params:{m:1},tip:`Set m to the perpendicular slope. Then check which choice sits on your line.`}}
+];
+
+</script>
+<script>
+(function(){
+'use strict';
+const Q = QUESTIONS, QBYID = {}; Q.forEach(q=>QBYID[q.id]=q);
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+function el(tag,attrs,...kids){
+  const e=document.createElement(tag);
+  for(const k in (attrs||{})){
+    const v=attrs[k];
+    if(v==null||v===false) continue;
+    if(k==='class') e.className=v;
+    else if(k==='html') e.innerHTML=v;
+    else if(k.startsWith('on')) e.addEventListener(k.slice(2),v);
+    else e.setAttribute(k,v===true?'':v);
+  }
+  kids.flat().forEach(c=>{ if(c==null||c===false) return; e.append(c.nodeType?c:document.createTextNode(c)); });
+  return e;
+}
+function M(s){
+  return String(s).replace(/\^\{([^}]*)\}/g,'<sup>$1</sup>')
+    .replace(/\{([^{}|]*)\|([^{}]*)\}/g,'<span class="frac"><span>$1</span><span>$2</span></span>');
+}
+function fmt(n){
+  if(!isFinite(n)) return '—';
+  if(Math.abs(n)<1e-9) return '0';
+  return String(+n.toFixed(4)).replace('-','−');
+}
+function toFrac(n,maxDen){
+  maxDen=maxDen||16;
+  if(!isFinite(n)||Math.abs(n-Math.round(n))<1e-9) return null;
+  for(let d=2; d<=maxDen; d++){ const p=Math.round(n*d); if(Math.abs(n-p/d)<1e-7) return (p<0?'−':'')+Math.abs(p)+'/'+d; }
+  return null;
+}
+function numWithFrac(n){ const f=toFrac(n); return f? f+' ('+fmt(n)+')' : fmt(n); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function clock(sec){ sec=Math.floor(sec); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return (h?h+':':'')+pad(m)+':'+pad(s); }
+
+/* ============ Expression engine ============ */
+const FUNCS={abs:Math.abs,sqrt:Math.sqrt,sin:Math.sin,cos:Math.cos,tan:Math.tan,ln:Math.log,log:Math.log10,floor:Math.floor,ceil:Math.ceil,round:Math.round,min:Math.min,max:Math.max};
+const FN_NAMES=Object.keys(FUNCS).sort((a,b)=>b.length-a.length);
+const PARAMS={};
+function lex(src){
+  let s=src.toLowerCase().replace(/\s+/g,'').replace(/[−–—]/g,'-').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/²/g,'^2').replace(/³/g,'^3').replace(/π/g,'pi').replace(/√/g,'sqrt');
+  let bar=0; s=s.replace(/\|/g,()=>(bar++%2===0)?'abs(':')');
+  const t=[]; let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(/[0-9.]/.test(c)){
+      let j=i; while(j<s.length&&/[0-9.]/.test(s[j])) j++;
+      const v=Number(s.slice(i,j)); if(Number.isNaN(v)) throw new Error('That number looks wrong');
+      t.push({k:'num',v}); i=j;
+    } else if(/[a-z]/.test(c)){
+      let j=i; while(j<s.length&&/[a-z]/.test(s[j])) j++;
+      let w=s.slice(i,j);
+      while(w){
+        if(w.startsWith('pi')){ t.push({k:'num',v:Math.PI}); w=w.slice(2); continue; }
+        const f=FN_NAMES.find(n=>w.startsWith(n));
+        if(f){ t.push({k:'fn',v:f}); w=w.slice(f.length); }
+        else { t.push({k:'var',v:w[0]}); w=w.slice(1); }
+      }
+      i=j;
+    } else if('+-*/^(),='.includes(c)){ t.push({k:'op',v:c}); i++; }
+    else throw new Error('Cannot use "'+c+'"');
+  }
+  const out=[];
+  for(const b of t){
+    const a=out[out.length-1];
+    if(a){
+      const aVal=(a.k==='num'||a.k==='var'||(a.k==='op'&&a.v===')'));
+      const bStart=(b.k==='var'||b.k==='fn'||(b.k==='op'&&b.v==='(')||(b.k==='num'&&a.k!=='num'));
+      if(aVal&&bStart) out.push({k:'op',v:'*'});
+    }
+    out.push(b);
+  }
+  return out;
+}
+function parseTokens(tok,ctx){
+  let p=0;
+  const eat=v=>{ if(tok[p]&&tok[p].k==='op'&&tok[p].v===v){ p++; return true; } return false; };
+  function expr(){ let l=term(); for(;;){ if(eat('+')){ const r=term(),a=l; l=e=>a(e)+r(e); } else if(eat('-')){ const r=term(),a=l; l=e=>a(e)-r(e); } else break; } return l; }
+  function term(){ let l=unary(); for(;;){ if(eat('*')){ const r=unary(),a=l; l=e=>a(e)*r(e); } else if(eat('/')){ const r=unary(),a=l; l=e=>a(e)/r(e); } else break; } return l; }
+  function unary(){ if(eat('-')){ const r=unary(); return e=>-r(e); } if(eat('+')) return unary(); return power(); }
+  function power(){ const b=atom(); if(eat('^')){ const ex=unary(); return e=>Math.pow(b(e),ex(e)); } return b; }
+  function atom(){
+    const t=tok[p]; if(!t) throw new Error('The expression is unfinished');
+    if(t.k==='num'){ p++; return ()=>t.v; }
+    if(t.k==='var'){
+      p++; const v=t.v;
+      if(v==='x'){ ctx.x=true; return e=>e.x; }
+      if(v==='y'){ ctx.y=true; return e=>e.y; }
+      if(v==='e') return ()=>Math.E;
+      ctx.params.add(v); if(!(v in PARAMS)) PARAMS[v]=1;
+      return ()=>PARAMS[v];
+    }
+    if(t.k==='fn'){
+      p++; if(!eat('(')) throw new Error('Put parentheses after '+t.v);
+      const args=[expr()]; while(eat(',')) args.push(expr());
+      if(!eat(')')) throw new Error('A ) is missing');
+      const f=FUNCS[t.v]; return e=>f(...args.map(a=>a(e)));
+    }
+    if(t.k==='op'&&t.v==='('){ p++; const r=expr(); if(!eat(')')) throw new Error('A ) is missing'); return r; }
+    throw new Error('Unexpected "'+t.v+'"');
+  }
+  const r=expr(); if(p<tok.length) throw new Error('Unexpected "'+tok[p].v+'"'); return r;
+}
+function compile(src){
+  if(!String(src).trim()) return {kind:'empty'};
+  try{
+    const tok=lex(src); if(!tok.length) return {kind:'empty'};
+    const params=new Set();
+    const isOp=(t,v)=>t&&t.k==='op'&&t.v===v;
+    if(isOp(tok[0],'(')&&isOp(tok[tok.length-1],')')){
+      let d=0,ci=-1,ok=true;
+      for(let i=0;i<tok.length;i++){
+        const t=tok[i]; if(t.k!=='op') continue;
+        if(t.v==='(') d++;
+        else if(t.v===')'){ d--; if(d===0&&i<tok.length-1){ ok=false; break; } }
+        else if(t.v===','&&d===1){ if(ci>=0){ ok=false; break; } ci=i; }
+      }
+      if(ok&&ci>0){
+        const cx={x:false,y:false,params};
+        const fx=parseTokens(tok.slice(1,ci),cx), fy=parseTokens(tok.slice(ci+1,-1),cx);
+        if(cx.x||cx.y) throw new Error('A point can only use numbers and sliders');
+        return {kind:'pt',fx:()=>fx({}),fy:()=>fy({}),params:[...params]};
+      }
+    }
+    const eqs=tok.map((t,i)=>isOp(t,'=')?i:-1).filter(i=>i>=0);
+    if(eqs.length>1) throw new Error('Use only one = sign');
+    if(eqs.length===1){
+      const ei=eqs[0];
+      const cl={x:false,y:false,params}, cr={x:false,y:false,params};
+      const L=parseTokens(tok.slice(0,ei),cl), R=parseTokens(tok.slice(ei+1),cr);
+      const usesX=cl.x||cr.x, usesY=cl.y||cr.y;
+      const direct=(ei===1&&tok[0].k==='var'&&tok[0].v==='y'&&!cr.y);
+      if(direct) return {kind:'fn',f:x=>R({x}),params:[...params]};
+      const g=(x,y)=>L({x,y})-R({x,y});
+      if(!usesY){
+        if(!usesX) throw new Error('Add an x or a y to graph this');
+        return {kind:'vl',h:x=>g(x,0),params:[...params]};
+      }
+      let allZero=true;
+      for(const x of [-3.1,0.7,2.3]){
+        const b=g(x,1)-g(x,0);
+        if(Math.abs((g(x,2)-g(x,1))-b)>1e-6*(1+Math.abs(b))) throw new Error('Only equations that are linear in y can be graphed here');
+        if(Math.abs(b)>1e-9) allZero=false;
+      }
+      if(allZero) return {kind:'vl',h:x=>g(x,0),params:[...params]};
+      return {kind:'fn',f:x=>{ const b=g(x,1)-g(x,0); return -g(x,0)/b; },params:[...params]};
+    }
+    const cx={x:false,y:false,params};
+    const R=parseTokens(tok,cx);
+    if(cx.y) throw new Error('Write an equation such as y = …');
+    return {kind:'fn',f:x=>R({x}),params:[...params]};
+  }catch(err){ return {kind:'err',msg:err.message}; }
+}
+function roots(h,a,b,N){
+  N=N||600; const r=[]; let x0=a,y0=h(a);
+  for(let i=1;i<=N;i++){
+    const x1=a+(b-a)*i/N, y1=h(x1);
+    if(isFinite(y0)){
+      if(y0===0) r.push(x0);
+      else if(isFinite(y1)&&y0*y1<0){
+        let lo=x0,hi=x1,flo=y0;
+        for(let k=0;k<50;k++){ const m=(lo+hi)/2, fm=h(m); if(!isFinite(fm)) break; if(fm*flo<=0) hi=m; else { lo=m; flo=fm; } }
+        const rx=(lo+hi)/2;
+        if(Math.abs(h(rx))<1e-3*Math.max(1,Math.abs(y0)+Math.abs(y1))) r.push(rx);
+      }
+    }
+    x0=x1; y0=y1;
+  }
+  if(y0===0) r.push(x0);
+  const out=[]; r.sort((p,q)=>p-q).forEach(v=>{ if(!out.length||Math.abs(v-out[out.length-1])>1e-6) out.push(v); });
+  return out;
+}
+
+/* ============ Grapher ============ */
+const COLORS=['#2d6cdf','#d4452f','#2e9a5f','#7b4fc9','#e68a1f','#12808a','#c2185b','#6b7c93'];
+function niceStep(range,len,minPx){
+  const target=range*minPx/len, p=Math.pow(10,Math.floor(Math.log10(target))), m=target/p;
+  return (m<=1?1:m<=2?2:m<=5?5:10)*p;
+}
+class Grapher{
+  constructor(canvas,opts){
+    this.cv=canvas; this.ctx=canvas.getContext('2d');
+    this.opts=Object.assign({pan:true,zoom:true,poi:true},opts||{});
+    this.view={xmin:-10,xmax:10,ymin:-10,ymax:10}; this.preset=null;
+    this.items=[]; this.marks=[]; this.poi=[]; this.cursor=null;
+    this.W=0; this.H=0; this.dpr=1;
+    this.onMark=null; this.onCursor=null; this.onDraw=null; this.onView=null;
+    this.attach();
+    this.ro=new ResizeObserver(()=>this.resize()); this.ro.observe(canvas);
+    this.resize();
+  }
+  setView(arr){ this.view={xmin:arr[0],xmax:arr[1],ymin:arr[2],ymax:arr[3]}; this.draw(); }
+  setExprs(list){ this.items=list.map((s,i)=>({src:s,c:compile(s),color:COLORS[i%COLORS.length]})); this.draw(); }
+  resize(){
+    const r=this.cv.getBoundingClientRect(); if(!r.width||!r.height) return;
+    this.dpr=window.devicePixelRatio||1; this.W=r.width; this.H=r.height;
+    this.cv.width=Math.round(r.width*this.dpr); this.cv.height=Math.round(r.height*this.dpr);
+    this.draw();
+  }
+  toWorld(px,py){ const v=this.view; return {x:v.xmin+px/this.W*(v.xmax-v.xmin), y:v.ymin+(this.H-py)/this.H*(v.ymax-v.ymin)}; }
+  sx(x){ const v=this.view; return (x-v.xmin)/(v.xmax-v.xmin)*this.W; }
+  sy(y){ const v=this.view; return this.H-(y-v.ymin)/(v.ymax-v.ymin)*this.H; }
+  compute(){
+    const v=this.view, fns=[], vls=[], pts=[], poi=[];
+    for(const it of this.items){
+      const c=it.c;
+      if(c.kind==='fn') fns.push(it);
+      else if(c.kind==='vl'){ it.xs=roots(c.h,v.xmin,v.xmax,800); vls.push(it); }
+      else if(c.kind==='pt'){ it.px=c.fx(); it.py=c.fy(); pts.push(it); }
+    }
+    const add=(x,y,type)=>{ if(!isFinite(x)||!isFinite(y)||Math.abs(y)>1e6) return; if(!poi.some(p=>fmt(p.x)===fmt(x)&&fmt(p.y)===fmt(y)&&p.type===type)) poi.push({x,y,type}); };
+    pts.forEach(it=>add(it.px,it.py,'point'));
+    fns.forEach(it=>{
+      const f=it.c.f;
+      if(0>=v.xmin&&0<=v.xmax){ const y0=f(0); if(isFinite(y0)) add(0,y0,'y-intercept'); }
+      roots(f,v.xmin,v.xmax).slice(0,6).forEach(x=>add(x,0,'x-intercept'));
+    });
+    for(let i=0;i<fns.length;i++) for(let j=i+1;j<fns.length;j++){
+      const f=fns[i].c.f, g=fns[j].c.f;
+      roots(x=>f(x)-g(x),v.xmin,v.xmax).slice(0,6).forEach(x=>add(x,f(x),'intersection'));
+    }
+    vls.forEach(vl=>vl.xs.forEach(xv=>{
+      add(xv,0,'x-intercept');
+      fns.forEach(it=>{ const y=it.c.f(xv); if(isFinite(y)) add(xv,y,'intersection'); });
+    }));
+    this.poi=poi.slice(0,60);
+  }
+  draw(){
+    if(!this.W) return;
+    const ctx=this.ctx, W=this.W, H=this.H, v=this.view;
+    const cs=getComputedStyle(this.cv), col=n=>cs.getPropertyValue(n).trim();
+    this.compute();
+    ctx.setTransform(this.dpr,0,0,this.dpr,0,0);
+    ctx.fillStyle=col('--g-bg'); ctx.fillRect(0,0,W,H);
+    const X=x=>this.sx(x), Y=y=>this.sy(y);
+    const xr=v.xmax-v.xmin, yr=v.ymax-v.ymin;
+    const sxp=niceStep(xr,W,this.opts.compact?46:54), syp=niceStep(yr,H,this.opts.compact?36:42);
+    const mant=s=>Math.round(s/Math.pow(10,Math.floor(Math.log10(s))));
+    const minor=(s)=>s/({1:5,2:4,5:5,10:5}[mant(s)]||5);
+    const lines=(step,horiz,color,w)=>{
+      ctx.strokeStyle=color; ctx.lineWidth=w; ctx.beginPath();
+      if(horiz){ for(let y=Math.ceil(v.ymin/step)*step; y<=v.ymax+1e-9; y+=step){ const py=Math.round(Y(y))+.5; ctx.moveTo(0,py); ctx.lineTo(W,py); } }
+      else { for(let x=Math.ceil(v.xmin/step)*step; x<=v.xmax+1e-9; x+=step){ const px=Math.round(X(x))+.5; ctx.moveTo(px,0); ctx.lineTo(px,H); } }
+      ctx.stroke();
+    };
+    const mx=minor(sxp), my=minor(syp);
+    if(mx/xr*W>=9) lines(mx,false,col('--g-minor'),1);
+    if(my/yr*H>=9) lines(my,true,col('--g-minor'),1);
+    lines(sxp,false,col('--g-grid'),1); lines(syp,true,col('--g-grid'),1);
+    ctx.strokeStyle=col('--g-axis'); ctx.lineWidth=1.6; ctx.beginPath();
+    if(v.ymin<=0&&v.ymax>=0){ const py=Math.round(Y(0))+.5; ctx.moveTo(0,py); ctx.lineTo(W,py); }
+    if(v.xmin<=0&&v.xmax>=0){ const px=Math.round(X(0))+.5; ctx.moveTo(px,0); ctx.lineTo(px,H); }
+    ctx.stroke();
+    ctx.fillStyle=col('--g-text'); ctx.font='11px '+getComputedStyle(document.body).getPropertyValue('--mono');
+    ctx.font='11px "JetBrains Mono", monospace';
+    const axY=Math.min(Math.max(Y(0),0),H), axX=Math.min(Math.max(X(0),0),W);
+    ctx.textAlign='center';
+    for(let x=Math.ceil(v.xmin/sxp)*sxp; x<=v.xmax+1e-9; x+=sxp){
+      if(Math.abs(x)<sxp/1e3) continue;
+      const px=X(x); let ty=axY+14; if(ty>H-4) ty=axY-6;
+      ctx.fillText(fmt(x),Math.min(Math.max(px,14),W-14),ty);
+    }
+    ctx.textAlign=(axX<38)?'left':'right';
+    for(let y=Math.ceil(v.ymin/syp)*syp; y<=v.ymax+1e-9; y+=syp){
+      if(Math.abs(y)<syp/1e3) continue;
+      const py=Y(y); const tx=(axX<38)?axX+6:axX-6;
+      ctx.fillText(fmt(y),tx,py-3);
+    }
+    if(v.xmin<=0&&v.xmax>=0&&v.ymin<=0&&v.ymax>=0){ ctx.textAlign='right'; ctx.fillText('0',axX-5,axY+13); }
+    // curves
+    ctx.lineJoin='round'; ctx.lineCap='round';
+    for(const it of this.items){
+      const c=it.c; ctx.strokeStyle=it.color; ctx.fillStyle=it.color; ctx.lineWidth=2.6;
+      if(c.kind==='fn'){
+        ctx.beginPath(); let pen=false,py=0,pyv=0;
+        for(let px=0;px<=W;px+=1){
+          const x=v.xmin+px/W*xr; let y; try{ y=c.f(x); }catch(e){ y=NaN; }
+          if(!isFinite(y)){ pen=false; continue; }
+          let sy=Y(y); sy=Math.max(-5e4,Math.min(5e4,sy));
+          if(pen&&Math.abs(sy-py)>H*0.5&&(y*pyv<0)) pen=false;
+          if(!pen){ ctx.moveTo(px,sy); pen=true; } else ctx.lineTo(px,sy);
+          py=sy; pyv=y;
+        }
+        ctx.stroke();
+      } else if(c.kind==='vl'){
+        (it.xs||[]).forEach(xv=>{ const px=X(xv); ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,H); ctx.stroke(); });
+      } else if(c.kind==='pt'){
+        const px=X(it.px), py=Y(it.py);
+        ctx.beginPath(); ctx.arc(px,py,5.5,0,Math.PI*2); ctx.fill();
+        ctx.lineWidth=2; ctx.strokeStyle=col('--g-bg'); ctx.stroke();
+      }
+    }
+    if(this.opts.poi){
+      ctx.lineWidth=2;
+      this.poi.forEach(p=>{ if(p.type==='point') return; const px=X(p.x), py=Y(p.y); if(px<-5||px>W+5||py<-5||py>H+5) return;
+        ctx.beginPath(); ctx.arc(px,py,4.2,0,Math.PI*2); ctx.fillStyle=col('--g-bg'); ctx.fill(); ctx.strokeStyle=col('--g-axis'); ctx.stroke(); });
+    }
+    // marks
+    this.marks.forEach((m,i)=>{
+      const px=X(m.x), py=Y(m.y); if(px<-20||px>W+20||py<-20||py>H+20) return;
+      const last=(i===this.marks.length-1);
+      ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fillStyle=col('--mark'); ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle=col('--ink'); ctx.stroke();
+      if(last||this.opts.labelAll){
+        const label='('+fmt(m.x)+', '+fmt(m.y)+')'; ctx.font='600 12px "JetBrains Mono", monospace';
+        const tw=ctx.measureText(label).width+14; let bx=px+10, by=py-30; if(bx+tw>W-4) bx=px-10-tw; if(by<4) by=py+12;
+        ctx.fillStyle=col('--ink'); ctx.beginPath(); ctx.roundRect?ctx.roundRect(bx,by,tw,22,6):ctx.rect(bx,by,tw,22); ctx.fill();
+        ctx.fillStyle=col('--surface'); ctx.textAlign='left'; ctx.fillText(label,bx+7,by+15);
+      }
+    });
+    if(this.onDraw) this.onDraw();
+  }
+  snap(px,py){
+    const W=this.W,H=this.H,v=this.view;
+    let best=null,bd=18;
+    for(const p of this.poi){ const d=Math.hypot(this.sx(p.x)-px,this.sy(p.y)-py); if(d<bd){ bd=d; best={x:p.x,y:p.y,label:p.type}; } }
+    if(best) return best;
+    const w=this.toWorld(px,py);
+    let cb=null,cd=14;
+    for(const it of this.items){
+      if(it.c.kind==='fn'){
+        const x=(Math.abs(this.sx(Math.round(w.x))-px)<7)?Math.round(w.x):Math.round(w.x*100)/100;
+        const y=it.c.f(x);
+        if(isFinite(y)){ const d=Math.abs(this.sy(y)-py); if(d<cd){ cd=d; cb={x,y,label:'on curve'}; } }
+      } else if(it.c.kind==='vl'){
+        (it.xs||[]).forEach(xv=>{ const d=Math.abs(this.sx(xv)-px); if(d<cd){ cd=d; cb={x:xv,y:Math.round(w.y*100)/100,label:'on line'}; } });
+      }
+    }
+    if(cb) return cb;
+    const rx=Math.round(w.x), ry=Math.round(w.y);
+    if(Math.hypot(this.sx(rx)-px,this.sy(ry)-py)<9) return {x:rx,y:ry,label:'point'};
+    return {x:Math.round(w.x*100)/100,y:Math.round(w.y*100)/100,label:'point'};
+  }
+  mark(p){ this.marks.push(p); if(this.marks.length>8) this.marks.shift(); this.draw(); if(this.onMark) this.onMark(p); }
+  clearMarks(){ this.marks=[]; this.draw(); if(this.onMark) this.onMark(null); }
+  zoomAt(f,cx,cy){
+    const v=this.view, nx=cx==null?(v.xmin+v.xmax)/2:cx, ny=cy==null?(v.ymin+v.ymax)/2:cy;
+    const n={xmin:nx-(nx-v.xmin)*f,xmax:nx+(v.xmax-nx)*f,ymin:ny-(ny-v.ymin)*f,ymax:ny+(v.ymax-ny)*f};
+    if(n.xmax-n.xmin<1e-3||n.xmax-n.xmin>1e5||n.ymax-n.ymin<1e-3||n.ymax-n.ymin>1e5) return;
+    this.view=n; this.draw(); if(this.onView) this.onView();
+  }
+  square(){
+    const v=this.view, cx=(v.xmin+v.xmax)/2, cy=(v.ymin+v.ymax)/2, xr=v.xmax-v.xmin, yr=xr*this.H/this.W;
+    this.view={xmin:v.xmin,xmax:v.xmax,ymin:cy-yr/2,ymax:cy+yr/2}; this.draw(); if(this.onView) this.onView();
+  }
+  attach(){
+    const cv=this.cv; let down=null, moved=false;
+    const pos=e=>{ const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; };
+    cv.addEventListener('pointerdown',e=>{ try{cv.setPointerCapture(e.pointerId);}catch(_){} down={x:e.clientX,y:e.clientY,v:Object.assign({},this.view)}; moved=false; });
+    cv.addEventListener('pointermove',e=>{
+      const p=pos(e);
+      if(down){
+        const dx=e.clientX-down.x, dy=e.clientY-down.y;
+        if(Math.hypot(dx,dy)>5) moved=true;
+        if(moved&&this.opts.pan){
+          const v0=down.v, w=v0.xmax-v0.xmin, h=v0.ymax-v0.ymin;
+          this.view={xmin:v0.xmin-dx/this.W*w,xmax:v0.xmax-dx/this.W*w,ymin:v0.ymin+dy/this.H*h,ymax:v0.ymax+dy/this.H*h};
+          this.draw(); if(this.onView) this.onView();
+        }
+      }
+      this.cursor=this.toWorld(p.x,p.y); if(this.onCursor) this.onCursor(this.cursor);
+    });
+    cv.addEventListener('pointerup',e=>{ if(down&&!moved){ const p=pos(e); this.mark(this.snap(p.x,p.y)); } down=null; });
+    cv.addEventListener('pointercancel',()=>{ down=null; });
+    cv.addEventListener('pointerleave',()=>{ this.cursor=null; if(this.onCursor) this.onCursor(null); });
+    if(this.opts.zoom){
+      cv.addEventListener('wheel',e=>{ e.preventDefault(); const p=pos(e), w=this.toWorld(p.x,p.y); this.zoomAt(Math.exp(e.deltaY*0.0015),w.x,w.y); },{passive:false});
+    }
+  }
+}
+
+/* ============ App state ============ */
+const KEY='wakama_sat_alg_t12_v1';
+let S=fresh();
+function fresh(){ return {phase:'start',name:'Student',mode:'test',order:Q.map(q=>q.id),idx:0,answers:{},flags:{},hints:{},checked:{},peeked:{},elapsed:0,round:1,firstScore:null,filter:'all'}; }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){} }
+function loadSaved(){ try{ const t=localStorage.getItem(KEY); if(!t) return null; const o=JSON.parse(t); return (o&&o.order)?o:null; }catch(_){ return null; } }
+const main=$('#main');
+let lastTick=Date.now();
+setInterval(()=>{
+  const now=Date.now();
+  if(S.phase==='test'||S.phase==='review'){ S.elapsed+=(now-lastTick)/1000; $('#clock').textContent=clock(S.elapsed); if(Math.floor(S.elapsed)%10===0) save(); }
+  lastTick=now;
+},1000);
+
+function parseAns(s){
+  s=String(s==null?'':s).trim().replace(/−/g,'-').replace(/\s+/g,'');
+  if(!s) return NaN;
+  if(/^-?\d+(\.\d+)?\/-?\d+(\.\d+)?$/.test(s)){ const p=s.split('/'); return +p[0]/+p[1]; }
+  if(/^-?(\d+\.?\d*|\.\d+)$/.test(s)) return +s;
+  return NaN;
+}
+function isAnswered(q){ const a=S.answers[q.id]; return q.type==='mc'? (typeof a==='number') : (a!=null&&String(a).trim()!==''); }
+function isCorrect(q){
+  const a=S.answers[q.id]; if(!isAnswered(q)) return false;
+  return q.type==='mc'? a===q.ans : Math.abs(parseAns(a)-q.ans)<1e-6;
+}
+function answerText(q,a){ if(q.type==='mc') return (typeof a==='number')? String.fromCharCode(65+a)+'. '+q.ch[a] : '—'; return (a==null||a==='')?'—':String(a); }
+function correctText(q){ return q.type==='mc'? String.fromCharCode(65+q.ans)+'. '+q.ch[q.ans] : fmt(q.ans); }
+const curQ=()=>QBYID[S.order[S.idx]];
+
+/* ============ Screens ============ */
+function chrome(){
+  const inTest=(S.phase==='test'||S.phase==='review');
+  $('#clock').classList.toggle('hide',!inTest);
+  $('#progPill').classList.toggle('hide',!inTest);
+  $('#calcBtn').classList.toggle('hide',!inTest);
+  if(!inTest) closeCalc();
+  if(inTest){
+    const n=S.order.filter(id=>isAnswered(QBYID[id])).length;
+    $('#progPill').textContent=n+' / '+S.order.length+' answered';
+    $('#clock').textContent=clock(S.elapsed);
+  }
+}
+function render(){
+  chrome(); main.innerHTML=''; window.scrollTo(0,0);
+  if(S.phase==='start') renderStart();
+  else if(S.phase==='test') renderTest();
+  else if(S.phase==='review') renderReview();
+  else renderResults();
+}
+
+function renderStart(){
+  const saved=loadSaved();
+  const sub1=[...new Set(Q.filter(q=>q.sec===1).map(q=>q.sub))], sub2=[...new Set(Q.filter(q=>q.sec===2).map(q=>q.sub))];
+  const nameIn=el('input',{class:'field',id:'nameIn',value:S.name,autocomplete:'off',maxlength:'30'});
+  nameIn.addEventListener('input',()=>{ S.name=nameIn.value.trim()||'Student'; });
+  const modes=[['test','Test mode','No feedback until you submit. Hints are still available.'],['practice','Practice mode','Check each answer as you go, then open the full solution.']];
+  const mbox=el('div',{class:'modes'});
+  modes.forEach(m=>{ const b=el('button',{class:'mode','aria-pressed':String(S.mode===m[0])},el('span',{class:'dot'}),el('div',{},el('b',{},m[1]),el('span',{},m[2]))); b.addEventListener('click',()=>{ S.mode=m[0]; $$('.mode',mbox).forEach((x,i)=>x.setAttribute('aria-pressed',String(modes[i][0]===S.mode))); }); mbox.append(b); });
+  const startBtn=el('button',{class:'btn primary',style:'width:100%;min-height:50px;font-size:1.05rem'},'Start the test');
+  startBtn.addEventListener('click',()=>{ const nm=S.name, md=S.mode; S=fresh(); S.name=nm; S.mode=md; S.phase='test'; lastTick=Date.now(); save(); render(); });
+  const panel=el('div',{class:'panel'},
+    el('label',{class:'l',for:'nameIn'},'Student name'),nameIn,
+    mbox,
+    startBtn);
+  if(saved&&saved.phase!=='start'){
+    const rb=el('button',{class:'btn',style:'width:100%;margin-top:10px'},'Resume saved test ('+(saved.phase==='results'?'results':Object.keys(saved.answers).length+' answered')+')');
+    rb.addEventListener('click',()=>{ S=Object.assign(fresh(),saved); lastTick=Date.now(); render(); });
+    panel.append(rb);
+  }
+  panel.append(el('ul',{class:'tools-list'},
+    el('li',{},'Graphing calculator on every question: type equations, add sliders, click any point to read its coordinates.'),
+    el('li',{},'Table, best-fit line and two-point slope tools sit in the same panel.'),
+    el('li',{},'Graph questions have a figure you can tap to read points.')));
+  main.append(el('div',{class:'start'},
+    el('div',{},
+      el('h1',{},'Digital SAT Algebra Test'),
+      el('p',{class:'lede'},'40 questions covering single-variable linear equations and two-variable linear equations, functions, slope and graphs. Some answers are multiple choice; others you type in.'),
+      el('div',{class:'topics'},
+        el('div',{class:'tcard'},el('span',{class:'range'},'QUESTIONS 1–20'),el('h3',{},'Topic 1: Single-variable linear equations'),el('ul',{},sub1.map(s=>el('li',{},s)))),
+        el('div',{class:'tcard'},el('span',{class:'range'},'QUESTIONS 21–40'),el('h3',{},'Topic 2: Two-variable equations, functions, slope & graphs'),el('ul',{},sub2.map(s=>el('li',{},s)))))),
+    panel));
+}
+
+function renderTest(){
+  const q=curQ(), n=S.order.length, num=S.idx+1;
+  if(window._figG){ try{ window._figG.ro.disconnect(); }catch(_){} window._figG=null; }
+  const card=el('section',{class:'card','aria-labelledby':'qh'});
+  card.append(el('div',{class:'meta'},
+    el('h2',{id:'qh',style:'font-size:1.2rem'},'Question '+num+' of '+n),
+    el('span',{class:'tag'},'TOPIC '+q.sec),
+    el('span',{},q.sub),
+    S.round>1?el('span',{class:'tag'},'RETRY ROUND '+S.round):null));
+  card.append(el('p',{class:'qtext',html:M(q.q)}));
+  if(q.table){
+    card.append(el('table',{class:'dtable'},
+      el('tr',{},el('th',{},'x'),q.table.x.map(v=>el('td',{},String(v)))),
+      el('tr',{},el('th',{},q.type==='spr'&&/f\(/.test(q.q)?'f(x)':'y'),q.table.y.map(v=>el('td',{},String(v))))));
+  }
+  let figG=null;
+  if(q.fig){
+    const cv=el('canvas',{'aria-label':'Figure for question '+q.id+'. Tap to read a point.'});
+    const read=el('span',{class:'readout'},'Tap the graph to read a point');
+    const clr=el('button',{class:'btn small ghost'},'Clear points');
+    const vw=q.fig.view, ar=(vw[1]-vw[0])/(vw[3]-vw[2]);
+    cv.style.aspectRatio=String(ar);
+    card.append(el('div',{class:'figbox'},cv,el('div',{class:'figbar'},read,clr)));
+    figG=new Grapher(cv,{pan:false,zoom:false,poi:false,labelAll:true,compact:true});
+    figG.setExprs(q.fig.exprs); figG.setView(vw);
+    figG.onMark=p=>{ read.textContent=p?('Point: ('+fmt(p.x)+', '+fmt(p.y)+')'):'Tap the graph to read a point'; };
+    clr.addEventListener('click',()=>figG.clearMarks());
+    requestAnimationFrame(()=>figG.resize());
+  }
+  // answer area
+  const fb=el('div',{id:'fb'});
+  if(q.type==='mc'){
+    const box=el('div',{class:'choices',role:'group','aria-label':'Answer choices'});
+    q.ch.forEach((c,i)=>{
+      const b=el('button',{class:'choice','aria-pressed':String(S.answers[q.id]===i),'data-i':String(i)},el('span',{class:'ltr'},String.fromCharCode(65+i)),el('span',{html:M(c)}));
+      b.addEventListener('click',()=>{ S.answers[q.id]=i; delete S.checked[q.id]; $$('.choice',box).forEach(x=>x.setAttribute('aria-pressed',String(x===b))); fb.innerHTML=''; $$('.choice',box).forEach(x=>x.classList.remove('good','bad')); afterAnswer(); });
+      box.append(b);
+    });
+    card.append(box);
+  } else {
+    const inp=el('input',{id:'sprIn',inputmode:'text',autocomplete:'off',spellcheck:'false','aria-label':'Your answer',value:S.answers[q.id]||''});
+    const echo=el('div',{class:'echo'});
+    const upd=()=>{ const v=parseAns(inp.value); echo.textContent=(inp.value.trim()&&!Number.isNaN(v))?('= '+fmt(v)):(inp.value.trim()?'Enter a number, fraction or decimal':''); };
+    inp.addEventListener('input',()=>{ S.answers[q.id]=inp.value; delete S.checked[q.id]; fb.innerHTML=''; upd(); afterAnswer(); });
+    upd();
+    card.append(el('div',{class:'spr'},el('label',{for:'sprIn',style:'display:block;font-weight:600;margin-bottom:6px'},'Your answer'),inp,echo,el('small',{},'Type a number. Fractions like 3/4 and decimals like 0.75 both work. Use − for negatives.')));
+  }
+  // actions
+  const hintBtn=el('button',{class:'btn'},'Hint');
+  const flagBtn=el('button',{class:'btn ghost','aria-pressed':String(!!S.flags[q.id])},S.flags[q.id]?'Flagged for review':'Flag for review');
+  const calcBtn=el('button',{class:'btn'},'Open calculator');
+  const acts=el('div',{class:'actions'},hintBtn,flagBtn,calcBtn);
+  let chk=null;
+  if(S.mode==='practice'){ chk=el('button',{class:'btn primary'},'Check answer'); acts.prepend(chk); }
+  card.append(acts);
+  const hbox=el('div',{class:'hints'});
+  card.append(hbox,fb);
+  const showHints=()=>{
+    hbox.innerHTML=''; const lv=S.hints[q.id]||0;
+    for(let i=0;i<lv;i++) hbox.append(el('div',{class:'hint'},el('b',{},'HINT '+(i+1)),el('span',{html:M(q.hints[i])})));
+    hintBtn.textContent=lv>=q.hints.length?'No more hints':'Hint ('+lv+'/'+q.hints.length+')';
+    hintBtn.disabled=lv>=q.hints.length;
+  };
+  showHints();
+  hintBtn.addEventListener('click',()=>{ S.hints[q.id]=(S.hints[q.id]||0)+1; save(); showHints(); });
+  flagBtn.addEventListener('click',()=>{ S.flags[q.id]=!S.flags[q.id]; flagBtn.setAttribute('aria-pressed',String(!!S.flags[q.id])); flagBtn.textContent=S.flags[q.id]?'Flagged for review':'Flag for review'; save(); drawNav(); });
+  calcBtn.addEventListener('click',()=>openCalc());
+  const showSolution=()=>{
+    const old=$('.solution',card); if(old) old.remove();
+    S.peeked[q.id]=true; save();
+    fb.append(el('div',{class:'solution'},el('b',{},'Answer: '),el('span',{html:M(correctText(q))}),el('div',{style:'margin-top:6px',html:M(q.exp)})));
+    $$('.choice',card).forEach((c,i)=>{ if(q.type==='mc'&&i===q.ans) c.classList.add('good'); });
+  };
+  const paintCheck=()=>{
+    fb.innerHTML='';
+    if(!S.checked.hasOwnProperty(q.id)) return;
+    const ok=S.checked[q.id];
+    if(q.type==='mc'){ $$('.choice',card).forEach((c,i)=>{ c.classList.remove('good','bad'); if(S.answers[q.id]===i) c.classList.add(ok?'good':'bad'); }); }
+    fb.append(el('div',{class:'banner '+(ok?'good':'bad')},ok?'Correct.':'Not yet. Try a hint, or look at your steps again.'));
+    const sb=el('button',{class:'btn small',style:'margin-top:10px'},'Show solution');
+    sb.addEventListener('click',()=>{ sb.remove(); showSolution(); });
+    fb.append(sb);
+    if(S.peeked[q.id]){ sb.remove(); showSolution(); }
+  };
+  if(chk){
+    chk.addEventListener('click',()=>{
+      if(!isAnswered(q)){ fb.innerHTML=''; fb.append(el('div',{class:'banner bad'},'Choose or type an answer first.')); return; }
+      S.checked[q.id]=isCorrect(q); save(); paintCheck();
+    });
+    paintCheck();
+  }
+  // footer nav
+  const prev=el('button',{class:'btn'},'← Previous'), next=el('button',{class:'btn primary'},S.idx===n-1?'Review & submit':'Next →');
+  prev.disabled=S.idx===0;
+  prev.addEventListener('click',()=>go(S.idx-1));
+  next.addEventListener('click',()=>{ if(S.idx===n-1){ S.phase='review'; save(); render(); } else go(S.idx+1); });
+  card.append(el('div',{class:'foot'},prev,next));
+  // navigator
+  const nav=el('aside',{class:'nav','aria-label':'Question navigator'},el('div',{class:'card'},el('h3',{},'Questions'),el('div',{id:'navBox'}),
+    el('div',{class:'legend'},el('span',{},el('i',{class:'d'}),'Answered'),el('span',{},el('i',{}),'Not yet'),el('span',{},el('i',{class:'f'}),'Flagged')),
+    (()=>{ const b=el('button',{class:'btn primary',style:'width:100%'},'Review & submit'); b.addEventListener('click',()=>{ S.phase='review'; save(); render(); }); return b; })()));
+  main.append(el('div',{class:'layout'},card,nav));
+  drawNav();
+  card.dataset.q=String(q.id);
+  window._figG=figG;
+}
+function afterAnswer(){ save(); drawNav(); chrome(); }
+function drawNav(){
+  const box=$('#navBox'); if(!box) return; box.innerHTML='';
+  const secs=[1,2];
+  secs.forEach(sec=>{
+    const ids=S.order.filter(id=>QBYID[id].sec===sec); if(!ids.length) return;
+    box.append(el('div',{class:'sec-h'},'TOPIC '+sec+(sec===1?' · SINGLE-VARIABLE':' · TWO-VARIABLE & GRAPHS')));
+    const g=el('div',{class:'ngrid'});
+    ids.forEach(id=>{
+      const q=QBYID[id], i=S.order.indexOf(id);
+      const b=el('button',{class:'nbtn'+(isAnswered(q)?' done':'')+(i===S.idx?' cur':'')+(S.flags[id]?' flag':''),'aria-label':'Question '+id+(isAnswered(q)?', answered':', not answered')+(S.flags[id]?', flagged':''),'aria-current':i===S.idx?'true':null},String(id));
+      b.addEventListener('click',()=>go(i)); g.append(b);
+    });
+    box.append(g);
+  });
+}
+function go(i){
+  S.idx=Math.max(0,Math.min(S.order.length-1,i)); save();
+  if(S.phase!=='test') S.phase='test';
+  render();
+  if($('#calc').classList.contains('open')) loadCalc(curQ());
+}
+
+function renderReview(){
+  const un=S.order.filter(id=>!isAnswered(QBYID[id])), fl=S.order.filter(id=>S.flags[id]);
+  const rows=el('div',{class:'rv-list'});
+  S.order.forEach((id,i)=>{
+    const q=QBYID[id], a=isAnswered(q);
+    const b=el('button',{class:'btn small'},'Open');
+    b.addEventListener('click',()=>go(i));
+    rows.append(el('div',{class:'rv-row'},el('b',{},String(id)),el('span',{style:'flex:1'},a?'Answered':'Not answered'),S.flags[id]?el('span',{class:'tag'},'FLAGGED'):null,b));
+  });
+  const sub=el('button',{class:'btn primary',style:'min-height:50px'},'Submit test');
+  let armed=false;
+  sub.addEventListener('click',()=>{
+    if(un.length&&!armed){ armed=true; sub.textContent='Submit with '+un.length+' blank. Click again to confirm.'; return; }
+    finish();
+  });
+  const back=el('button',{class:'btn'},'← Back to questions'); back.addEventListener('click',()=>go(S.idx));
+  main.append(el('div',{class:'card'},
+    el('h2',{style:'font-size:1.6rem'},'Review before you submit'),
+    el('p',{class:'lede',style:'margin:8px 0 0'},un.length?('You have '+un.length+' unanswered: '+un.join(', ')+'.'):'Every question has an answer.'),
+    fl.length?el('p',{style:'margin:8px 0 0'},'Flagged: '+fl.join(', ')+'.'):null,
+    rows,el('div',{class:'actions'},back,sub)));
+}
+function finish(){
+  S.phase='results'; if(S.firstScore==null) S.firstScore=S.order.filter(id=>isCorrect(QBYID[id])).length;
+  save(); render();
+}
+
+function breakdown(){
+  const bySub={}, bySec={1:{c:0,t:0},2:{c:0,t:0}};
+  S.order.forEach(id=>{
+    const q=QBYID[id], ok=isCorrect(q);
+    bySec[q.sec].t++; if(ok) bySec[q.sec].c++;
+    const k=q.sec+'|'+q.sub; bySub[k]=bySub[k]||{sec:q.sec,sub:q.sub,c:0,t:0}; bySub[k].t++; if(ok) bySub[k].c++;
+  });
+  return {bySub:Object.values(bySub),bySec};
+}
+function summaryText(){
+  const b=breakdown(), score=S.order.filter(id=>isCorrect(QBYID[id])).length, total=S.order.length;
+  const hints=Object.keys(S.hints).filter(id=>S.order.includes(+id)).reduce((a,id)=>a+S.hints[id],0);
+  const missed=S.order.filter(id=>!isCorrect(QBYID[id]));
+  let t="Wakama's ED Games · Digital SAT Algebra Test (Topics 1–2)\n";
+  t+='Student: '+S.name+'\nMode: '+(S.mode==='test'?'Test':'Practice')+(S.round>1?' · Retry round '+S.round:'')+'\n';
+  t+='Score: '+score+'/'+total+' ('+Math.round(100*score/total)+'%)\nTime: '+clock(S.elapsed)+'\nHints used: '+hints+'\n';
+  if(S.order.length===40) t+='Topic 1: '+b.bySec[1].c+'/'+b.bySec[1].t+' · Topic 2: '+b.bySec[2].c+'/'+b.bySec[2].t+'\n';
+  t+='\nBy skill:\n'+b.bySub.map(s=>'- '+s.sub+': '+s.c+'/'+s.t).join('\n');
+  t+='\n\nMissed: '+(missed.length?missed.map(id=>'Q'+id).join(', '):'none');
+  return t;
+}
+function renderResults(){
+  const total=S.order.length, score=S.order.filter(id=>isCorrect(QBYID[id])).length, pct=Math.round(100*score/total);
+  const hints=Object.keys(S.hints).filter(id=>S.order.includes(+id)).reduce((a,id)=>a+S.hints[id],0);
+  const b=breakdown(), missed=S.order.filter(id=>!isCorrect(QBYID[id]));
+  const wrap=el('div',{});
+  wrap.append(el('h1',{style:'font-size:clamp(1.8rem,4vw,2.6rem)'},S.name+', here are your results'));
+  wrap.append(el('div',{class:'stats'},
+    el('div',{class:'stat'},el('small',{},'Score'),el('b',{class:'num'},score+'/'+total)),
+    el('div',{class:'stat'},el('small',{},'Percent correct'),el('b',{class:'num'},pct+'%')),
+    el('div',{class:'stat'},el('small',{},'Time'),el('b',{class:'num'},clock(S.elapsed))),
+    el('div',{class:'stat'},el('small',{},'Hints used'),el('b',{class:'num'},String(hints)))));
+  if(S.round>1&&S.firstScore!=null) wrap.append(el('p',{class:'lede',style:'margin-top:0'},'First attempt: '+S.firstScore+'/40.'));
+  const skillsCard=el('div',{class:'card'},el('h2',{style:'font-size:1.3rem'},'Skills'),el('p',{class:'help',style:'margin:4px 0 0'},'Green is strong, amber needs a second look, red needs reteaching.'));
+  const sk=el('div',{class:'skills'});
+  [1,2].forEach(sec=>{
+    const rows=b.bySub.filter(s=>s.sec===sec); if(!rows.length) return;
+    sk.append(el('div',{class:'sec-h',style:'margin-top:10px'},'TOPIC '+sec));
+    rows.forEach(s=>{ const r=s.c/s.t; sk.append(el('div',{class:'skill'},el('span',{},s.sub),el('div',{class:'bar'},(()=>{ const i=el('i',{class:r>=0.99?'':(r>=0.5?'mid':'low')}); i.style.width=Math.max(4,r*100)+'%'; if(r>=0.99) i.style.background='var(--good)'; return i; })()),el('span',{class:'num'},s.c+'/'+s.t))); });
+  });
+  skillsCard.append(sk); wrap.append(skillsCard);
+  // actions
+  const retry=el('button',{class:'btn primary'},missed.length?'Retry '+missed.length+' missed':'Nothing to retry');
+  retry.disabled=!missed.length;
+  retry.addEventListener('click',()=>{
+    missed.forEach(id=>{ delete S.answers[id]; delete S.checked[id]; delete S.peeked[id]; });
+    S.order=missed.slice(); S.idx=0; S.mode='practice'; S.phase='test'; S.round++; S.elapsed=0; lastTick=Date.now(); save(); render();
+  });
+  const copyBtn=el('button',{class:'btn'},'Copy summary for my tutor');
+  const ta=el('textarea',{class:'rtxt hide','aria-label':'Summary text',readonly:true}); ta.value=summaryText();
+  copyBtn.addEventListener('click',async()=>{
+    let ok=false; try{ await navigator.clipboard.writeText(ta.value); ok=true; }catch(_){}
+    if(ok){ copyBtn.textContent='Copied'; setTimeout(()=>copyBtn.textContent='Copy summary for my tutor',2000); }
+    else { ta.classList.remove('hide'); ta.focus(); ta.select(); copyBtn.textContent='Select the text below and copy'; }
+  });
+  const again=el('button',{class:'btn ghost'},'Start over'); let arm=false;
+  again.addEventListener('click',()=>{ if(!arm){ arm=true; again.textContent='Click again to erase this attempt'; setTimeout(()=>{ arm=false; again.textContent='Start over'; },3500); return; } const nm=S.name; S=fresh(); S.name=nm; try{localStorage.removeItem(KEY);}catch(_){} render(); });
+  wrap.append(el('div',{class:'actions',style:'margin:18px 0'},retry,copyBtn,again),ta);
+  // review list
+  wrap.append(el('h2',{style:'font-size:1.4rem;margin-top:26px'},'Review every question'));
+  const flt=el('div',{class:'filters'});
+  const list=el('div',{});
+  const paint=()=>{
+    $$('button',flt).forEach(x=>x.classList.toggle('on',x.dataset.f===S.filter));
+    list.innerHTML='';
+    S.order.forEach(id=>{
+      const q=QBYID[id], ok=isCorrect(q);
+      if(S.filter==='missed'&&ok) return; if(S.filter==='flagged'&&!S.flags[id]) return;
+      const d=el('details',{class:'rv'},
+        el('summary',{},el('span',{class:'st '+(ok?'ok':'no')},ok?'RIGHT':(isAnswered(q)?'WRONG':'BLANK')),el('b',{class:'num'},'Q'+id),el('span',{style:'color:var(--muted)'},q.sub),S.flags[id]?el('span',{class:'tag'},'FLAGGED'):null,(S.hints[id]?el('span',{class:'tag'},'HINTS '+S.hints[id]):null)),
+        el('div',{class:'body'},
+          el('p',{html:M(q.q),style:'margin:0 0 8px'}),
+          q.table?el('p',{class:'num',style:'font-family:var(--mono);margin:0 0 8px'},'x: '+q.table.x.join(', ')+'   |   y: '+q.table.y.join(', ')):null,
+          el('p',{style:'margin:0 0 4px'},el('b',{},'Your answer: '),el('span',{html:M(answerText(q,S.answers[id]))})),
+          el('p',{style:'margin:0 0 8px'},el('b',{},'Correct answer: '),el('span',{html:M(correctText(q))})),
+          el('div',{class:'solution',html:M(q.exp)})));
+      list.append(d);
+    });
+    if(!list.children.length) list.append(el('p',{class:'help'},'Nothing to show for this filter.'));
+  };
+  [['all','All'],['missed','Missed'],['flagged','Flagged']].forEach(f=>{ const b=el('button',{class:'btn small','data-f':f[0]},f[1]); b.addEventListener('click',()=>{ S.filter=f[0]; paint(); }); flt.append(b); });
+  wrap.append(flt,list); paint();
+  main.append(wrap);
+}
+
+/* ============ Calculator drawer ============ */
+const calcEl=$('#calc'); let G=null, calcQ=null; const CS={};
+const tabs=$$('.tab');
+function ensureG(){
+  if(G) return;
+  G=new Grapher($('#gcv'),{pan:true,zoom:true,poi:true});
+  G.onCursor=c=>{ $('#cursorRead').textContent=c?('x = '+fmt(Math.round(c.x*100)/100)+'   y = '+fmt(Math.round(c.y*100)/100)):'Move over the graph'; };
+  G.onMark=p=>{ $('#selRead').textContent=p?('Marked ('+fmt(p.x)+', '+fmt(p.y)+')'+(p.label&&p.label!=='point'&&p.label!=='on curve'&&p.label!=='on line'?' · '+p.label:'')):'Click the graph to mark a point'; if(curTab==='poi') renderPoi(); };
+  let raf=0; G.onDraw=()=>{ if(raf) return; raf=requestAnimationFrame(()=>{ raf=0; if(curTab==='poi') renderPoi(); if(curTab==='table') refreshTable(); }); };
+  $('#zIn').addEventListener('click',()=>G.zoomAt(0.7));
+  $('#zOut').addEventListener('click',()=>G.zoomAt(1/0.7));
+  $('#zHome').addEventListener('click',()=>{ if(calcQ&&CS[calcQ.id]) G.setView(CS[calcQ.id].preset); });
+  $('#zSq').addEventListener('click',()=>G.square());
+  tabs.forEach(t=>t.addEventListener('click',()=>setTab(t.dataset.tab)));
+}
+let curTab='expr';
+function setTab(t){
+  curTab=t;
+  tabs.forEach(x=>x.setAttribute('aria-selected',String(x.dataset.tab===t)));
+  $$('.tabpane').forEach(p=>p.classList.toggle('on',p.dataset.pane===t));
+  if(CS[calcQ&&calcQ.id]) CS[calcQ.id].tab=t;
+  if(t==='table') buildTable(); if(t==='poi') renderPoi();
+}
+function defaultState(q){
+  const c=q.calc||{exprs:[''],view:[-10,10,-10,10]};
+  return {exprs:(c.exprs&&c.exprs.length?c.exprs.slice():['']),preset:c.view.slice(),view:c.view.slice(),params:Object.assign({},c.params||{}),tab:c.tab||'expr',pts:c.pts||'',tableX:(c.tableX||[-3,-2,-1,0,1,2,3]).slice(),marks:[],tip:c.tip||'Type an equation to begin.',tsel:0,two:['','','','']};
+}
+function saveCalc(){
+  if(!calcQ||!G) return; const st=CS[calcQ.id]; if(!st) return;
+  const v=G.view; st.view=[v.xmin,v.xmax,v.ymin,v.ymax]; st.params=Object.assign({},PARAMS); st.marks=G.marks.slice();
+}
+function loadCalc(q){
+  ensureG(); saveCalc();
+  calcQ=q; const st=CS[q.id]||(CS[q.id]=defaultState(q));
+  Object.keys(PARAMS).forEach(k=>delete PARAMS[k]); Object.assign(PARAMS,st.params);
+  $('#calcQ').textContent='Q'+q.id; $('#calcTip').textContent=st.tip;
+  G.marks=st.marks.slice(); $('#selRead').textContent='Click the graph to mark a point';
+  buildExprPane(); buildFit(); buildTwo();
+  recompile(true);
+  G.setView(st.view);
+  setTab(st.tab||'expr');
+}
+function openCalc(){
+  calcEl.classList.add('open'); document.body.classList.add('calc-open'); $('#calcBtn').setAttribute('aria-expanded','true'); $('#calcBtn').classList.add('on');
+  loadCalc(curQ()); requestAnimationFrame(()=>{ G.resize(); });
+}
+function closeCalc(){ calcEl.classList.remove('open'); document.body.classList.remove('calc-open'); $('#calcBtn').setAttribute('aria-expanded','false'); $('#calcBtn').classList.remove('on'); if(G) saveCalc(); }
+$('#calcBtn').addEventListener('click',()=>{ calcEl.classList.contains('open')?closeCalc():openCalc(); });
+$('#calcClose').addEventListener('click',closeCalc);
+$('#calcReset').addEventListener('click',()=>{ if(!calcQ) return; delete CS[calcQ.id]; Object.keys(PARAMS).forEach(k=>delete PARAMS[k]); calcQ=null; loadCalc(curQ()); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&calcEl.classList.contains('open')) closeCalc(); });
+
+function st(){ return CS[calcQ.id]; }
+let exprBox, slidersBox;
+function buildExprPane(){
+  const pane=$('#paneExpr'); pane.innerHTML='';
+  exprBox=el('div',{}); slidersBox=el('div',{class:'sliders'});
+  const add=el('button',{class:'btn small'},'+ Add equation'); add.addEventListener('click',()=>{ st().exprs.push(''); buildRows(); const ins=$$('.erow input',exprBox); ins[ins.length-1].focus(); });
+  const clr=el('button',{class:'btn small ghost'},'Clear marked points'); clr.addEventListener('click',()=>G.clearMarks());
+  pane.append(exprBox,el('div',{class:'actions'},add,clr),slidersBox,el('p',{class:'help'},'Tip: drag on the graph to move it, scroll or use + and − to zoom. The grey circles are intersections and intercepts.'));
+  buildRows();
+}
+function buildRows(){
+  exprBox.innerHTML='';
+  st().exprs.forEach((s,i)=>{
+    const sw=el('span',{class:'sw'}); sw.style.background=COLORS[i%COLORS.length];
+    const inp=el('input',{type:'text',value:s,autocomplete:'off',autocapitalize:'off',spellcheck:'false',placeholder:i===0?'y = 2x + 3':'Another equation','aria-label':'Equation '+(i+1)});
+    const del=el('button',{class:'del','aria-label':'Remove equation '+(i+1)},'×');
+    const err=el('div',{class:'err hide','data-err':String(i)});
+    inp.addEventListener('input',()=>{ st().exprs[i]=inp.value; recompile(false); });
+    del.addEventListener('click',()=>{ st().exprs.splice(i,1); if(!st().exprs.length) st().exprs.push(''); buildRows(); recompile(false); });
+    exprBox.append(el('div',{class:'erow'},sw,inp,del),err);
+  });
+  recompile(false);
+}
+let sliderKey='';
+function recompile(forceSliders){
+  if(!G) return;
+  G.setExprs(st().exprs);
+  const ps=new Set();
+  G.items.forEach((it,i)=>{
+    const e=$('[data-err="'+i+'"]',exprBox);
+    if(e){ if(it.c.kind==='err'){ e.textContent=it.c.msg; e.classList.remove('hide'); } else e.classList.add('hide'); }
+    (it.c.params||[]).forEach(p=>ps.add(p));
+  });
+  const key=[...ps].sort().join('');
+  if(key!==sliderKey||forceSliders){ sliderKey=key; buildSliders([...ps].sort()); }
+  if(curTab==='table') buildTable();
+}
+function buildSliders(list){
+  slidersBox.innerHTML='';
+  list.forEach(p=>{
+    const rng=el('input',{type:'range',min:'-20',max:'20',step:'0.05',value:String(PARAMS[p]),'aria-label':'Slider for '+p});
+    const num=el('input',{type:'number',step:'any',value:String(PARAMS[p]),'aria-label':'Value of '+p});
+    const set=v=>{ if(Number.isNaN(v)) return; PARAMS[p]=v; G.draw(); };
+    rng.addEventListener('input',()=>{ num.value=String(+(+rng.value).toFixed(3)); set(+rng.value); });
+    num.addEventListener('input',()=>{ const v=parseFloat(num.value); if(!Number.isNaN(v)){ rng.value=String(Math.max(-20,Math.min(20,v))); set(v); } });
+    slidersBox.append(el('div',{class:'srow'},el('b',{},p+' ='),rng,num));
+  });
+}
+function addExpr(s){
+  const ex=st().exprs; if(ex.includes(s)) return;
+  const e=ex.findIndex(x=>!x.trim()); if(e>=0) ex[e]=s; else ex.push(s);
+  buildRows();
+}
+/* table */
+function fnItems(){ return G.items.map((it,i)=>({it,i})).filter(o=>o.it.c.kind==='fn'); }
+function buildTable(){
+  const pane=$('#paneTable'); pane.innerHTML='';
+  const fns=fnItems();
+  if(!fns.length){ pane.append(el('p',{class:'help'},'Add an equation such as y = 2x + 9 on the Equations tab. Its values will show here.')); return; }
+  const s=st(); if(s.tsel>=fns.length) s.tsel=0;
+  const sel=el('select',{class:'field','aria-label':'Equation to tabulate'}); fns.forEach((o,k)=>sel.append(el('option',{value:String(k)},'y = '+(o.it.src.replace(/^\s*y\s*=\s*/i,'')||'…')))); sel.value=String(s.tsel);
+  sel.addEventListener('change',()=>{ s.tsel=+sel.value; refreshTable(); });
+  const tb=el('table',{class:'tbl',id:'tbl'});
+  tb.append(el('tr',{},el('th',{},'x'),el('th',{},'y')));
+  s.tableX.forEach((x,r)=>{
+    const inp=el('input',{type:'text',inputmode:'decimal',value:String(x),'aria-label':'x value '+(r+1)});
+    inp.addEventListener('input',()=>{ const v=parseAns(inp.value); s.tableX[r]=Number.isNaN(v)?NaN:v; refreshTable(); });
+    tb.append(el('tr',{},el('td',{},inp),el('td',{class:'ty'},'')));
+  });
+  const add=el('button',{class:'btn small',style:'margin-top:10px'},'+ Add row'); add.addEventListener('click',()=>{ const last=s.tableX[s.tableX.length-1]; s.tableX.push(Number.isFinite(last)?last+1:0); buildTable(); });
+  pane.append(el('label',{class:'help',style:'display:block;margin:0 0 6px'},'Equation'),sel,tb,add,el('p',{class:'help'},'Edit any x value to see its y.'));
+  refreshTable();
+}
+function refreshTable(){
+  const tb=$('#tbl'); if(!tb||!G) return; const fns=fnItems(); const s=st(); const o=fns[s.tsel]; if(!o) return;
+  $$('tr',tb).slice(1).forEach((tr,r)=>{ const x=s.tableX[r]; let y=NaN; try{ y=o.it.c.f(x); }catch(_){} $('.ty',tr).textContent=isFinite(y)?fmt(y):'undefined'; });
+}
+/* fit line */
+function linFit(pts){
+  const n=pts.length; let sx=0,sy=0,sxx=0,sxy=0,syy=0;
+  pts.forEach(p=>{ sx+=p[0]; sy+=p[1]; sxx+=p[0]*p[0]; sxy+=p[0]*p[1]; syy+=p[1]*p[1]; });
+  const den=n*sxx-sx*sx; if(Math.abs(den)<1e-12) return {vertical:true,x:pts[0][0]};
+  const m=(n*sxy-sx*sy)/den, b=(sy-m*sx)/n;
+  let ssr=0,sst=0; const my=sy/n; pts.forEach(p=>{ ssr+=Math.pow(p[1]-(m*p[0]+b),2); sst+=Math.pow(p[1]-my,2); });
+  return {m,b,r2:sst<1e-12?1:1-ssr/sst};
+}
+function readPts(text){
+  const out=[];
+  text.replace(/−/g,'-').split(/\n|;/).forEach(line=>{ const nums=line.match(/-?\d*\.?\d+/g); if(nums&&nums.length>=2) out.push([+nums[0],+nums[1]]); });
+  return out;
+}
+function eqString(m,b){
+  const mm=Math.abs(m-Math.round(m))<1e-9?Math.round(m):m;
+  let s='y = ';
+  if(Math.abs(mm)<1e-9) return 'y = '+fmt(b);
+  s+=(mm===1?'':mm===-1?'−':fmt(mm))+'x';
+  if(Math.abs(b)>1e-9) s+=(b<0?' − ':' + ')+fmt(Math.abs(b));
+  return s;
+}
+function buildFit(){
+  const pane=$('#paneFit'); pane.innerHTML=''; const s=st();
+  const ta=el('textarea',{class:'pts',id:'ptsTa','aria-label':'Points, one x,y pair per line',placeholder:'1, 7\n2, 11\n3, 15'}); ta.value=s.pts;
+  const out=el('div',{id:'fitOut'});
+  const run=()=>{
+    s.pts=ta.value; const pts=readPts(ta.value); out.innerHTML='';
+    if(pts.length<2){ out.append(el('p',{class:'help'},'Enter at least two points, one per line, like 2, 5.')); return null; }
+    const f=linFit(pts);
+    if(f.vertical){ out.append(el('div',{class:'res'},el('span',{},'All x-values are the same: vertical line '),el('b',{},'x = '+fmt(f.x)))); return f; }
+    out.append(el('div',{class:'res'},
+      el('span',{},'Slope m = ',el('b',{},numWithFrac(f.m))),
+      el('span',{},'y-intercept b = ',el('b',{},numWithFrac(f.b))),
+      el('span',{},'Equation: ',el('b',{},eqString(f.m,f.b))),
+      el('span',{style:'color:var(--muted)'},f.r2>1-1e-9?'Every point is exactly on this line.':'Not exact. r² = '+fmt(f.r2)+'. The points do not all lie on one line.')));
+    return f;
+  };
+  const plot=el('button',{class:'btn primary small'},'Plot points and line');
+  plot.addEventListener('click',()=>{ const pts=readPts(ta.value); const f=run(); if(!f) return; pts.forEach(p=>addExpr('('+p[0]+','+p[1]+')')); if(f.vertical) addExpr('x='+f.x); else addExpr('y='+(+f.m.toPrecision(10))+'x+'+(+f.b.toPrecision(10))); });
+  ta.addEventListener('input',run);
+  pane.append(el('p',{class:'help',style:'margin:0 0 8px'},'One point per line as x, y. The tool finds the line that fits best.'),ta,el('div',{class:'actions',style:'margin-top:10px'},plot),out); run();
+}
+/* two points */
+function buildTwo(){
+  const pane=$('#paneTwo'); pane.innerHTML=''; const s=st();
+  const names=['x₁','y₁','x₂','y₂'], ins=names.map((n,i)=>el('input',{type:'text',inputmode:'decimal',value:s.two[i],'aria-label':n,id:'tp'+i}));
+  const grid=el('div',{class:'grid4'}); ins.forEach((inp,i)=>grid.append(el('div',{},el('label',{for:'tp'+i},names[i]),inp)));
+  const out=el('div',{id:'twoOut'});
+  const run=()=>{
+    ins.forEach((inp,i)=>s.two[i]=inp.value);
+    const v=ins.map(i=>parseAns(i.value)); out.innerHTML='';
+    if(v.some(Number.isNaN)){ out.append(el('p',{class:'help'},'Enter all four numbers. Marked points can be sent here from the Points tab.')); return; }
+    const [x1,y1,x2,y2]=v, dx=x2-x1, dy=y2-y1, mid='('+fmt((x1+x2)/2)+', '+fmt((y1+y2)/2)+')', dist=Math.hypot(dx,dy);
+    if(Math.abs(dx)<1e-12){ out.append(el('div',{class:'res'},el('span',{},'Vertical line: ',el('b',{},'x = '+fmt(x1))),el('span',{},'Slope is undefined'),el('span',{},'Midpoint: ',el('b',{},mid)),el('span',{},'Distance: ',el('b',{},fmt(dist))))); return; }
+    const m=dy/dx, b=y1-m*x1;
+    out.append(el('div',{class:'res'},
+      el('span',{},'Slope m = Δy/Δx = '+fmt(dy)+'/'+fmt(dx)+' = ',el('b',{},numWithFrac(m))),
+      el('span',{},'y-intercept b = ',el('b',{},numWithFrac(b))),
+      el('span',{},'x-intercept = ',el('b',{},Math.abs(m)<1e-12?'none':numWithFrac(-b/m))),
+      el('span',{},'Equation: ',el('b',{},eqString(m,b))),
+      el('span',{},'Midpoint: ',el('b',{},mid)),
+      el('span',{},'Distance: ',el('b',{},fmt(dist)))));
+  };
+  const plot=el('button',{class:'btn primary small'},'Plot this line');
+  plot.addEventListener('click',()=>{ const v=ins.map(i=>parseAns(i.value)); if(v.some(Number.isNaN)) return; const [x1,y1,x2,y2]=v; addExpr('('+x1+','+y1+')'); addExpr('('+x2+','+y2+')'); if(Math.abs(x2-x1)<1e-12) addExpr('x='+x1); else { const m=(y2-y1)/(x2-x1); addExpr('y='+(+m.toPrecision(10))+'(x-'+'('+x1+'))+'+'('+y1+')'); } });
+  ins.forEach(i=>i.addEventListener('input',run));
+  pane.append(grid,el('div',{class:'actions',style:'margin-top:10px'},plot),out); run();
+  pane._run=run;
+}
+/* points */
+function renderPoi(){
+  const pane=$('#panePoi'); if(!G||!calcQ) return; pane.innerHTML='';
+  pane.append(el('h3',{style:'font-size:1rem;margin-bottom:4px'},'Marked points'));
+  if(!G.marks.length) pane.append(el('p',{class:'help',style:'margin:0 0 10px'},'Click the graph to mark points. Send two of them to the Two points tab to get a slope.'));
+  G.marks.slice().reverse().forEach((m,ri)=>{
+    const idx=G.marks.length-1-ri;
+    const send=k=>{ const s=st(); s.two[k*2]=String(m.x); s.two[k*2+1]=String(m.y); buildTwo(); };
+    const b1=el('button',{class:'btn small'},'→ P1'), b2=el('button',{class:'btn small'},'→ P2'), rm=el('button',{class:'btn small ghost','aria-label':'Remove point'},'×');
+    b1.addEventListener('click',()=>{ send(0); setTab('two'); }); b2.addEventListener('click',()=>{ send(1); setTab('two'); });
+    rm.addEventListener('click',()=>{ G.marks.splice(idx,1); G.draw(); });
+    pane.append(el('div',{class:'poi-i'},el('b',{},'('+fmt(m.x)+', '+fmt(m.y)+')'),el('span',{class:'k'},m.label&&m.label!=='point'?m.label:''),b1,b2,rm));
+  });
+  pane.append(el('h3',{style:'font-size:1rem;margin:16px 0 4px'},'Points of interest in view'));
+  const pi=G.poi.filter(p=>p.type!=='point');
+  if(!pi.length) pane.append(el('p',{class:'help',style:'margin:0'},'Intersections and intercepts of your graphs appear here.'));
+  pi.slice(0,24).forEach(p=>{
+    const b=el('button',{class:'btn small'},'Mark'); b.addEventListener('click',()=>G.mark({x:p.x,y:p.y,label:p.type}));
+    pane.append(el('div',{class:'poi-i'},el('span',{class:'k'},p.type),el('b',{},'('+fmt(p.x)+', '+fmt(p.y)+')'),b));
+  });
+}
+/* theme redraw */
+try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{ if(G) G.draw(); if(window._figG) window._figG.draw(); }); }catch(_){}
+new MutationObserver(()=>{ if(G) G.draw(); if(window._figG) window._figG.draw(); }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+window.__sat={S:()=>S,Q,compile,isCorrect,parseAns};
+render();
+})();
+</script>
+</body>
+</html>
