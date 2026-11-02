@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projects — Gideon Wakama</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,7 +20,6 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About Me</a></li>
       <li><a href="project.html" aria-current="page">Projects</a></li>
-      <li><a href="planner.html">Academic Planner</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
@@ -41,26 +40,8 @@
       <div class="ledger-rule"><span class="code">PORTFOLIO</span><span class="rule"></span></div>
 
       <div class="grid grid-3">
-
-        <!-- PROJECT 1 -->
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CleP clearance portal illustration">
-              <rect width="400" height="250" fill="#142433"/>
-              <rect x="40" y="40" width="320" height="170" rx="4" fill="#F3F4EE"/>
-              <rect x="60" y="65" width="180" height="14" rx="2" fill="#C9971F"/>
-              <rect x="60" y="95" width="280" height="8" rx="2" fill="#C7CBB9"/>
-              <rect x="60" y="112" width="280" height="8" rx="2" fill="#C7CBB9"/>
-              <rect x="60" y="129" width="200" height="8" rx="2" fill="#C7CBB9"/>
-              <circle cx="80" cy="165" r="10" fill="#2C7A52"/>
-              <circle cx="130" cy="165" r="10" fill="#2C7A52"/>
-              <circle cx="180" cy="165" r="10" fill="#C9971F"/>
-              <circle cx="230" cy="165" r="10" fill="#E7E9DF"/>
-              <line x1="90" y1="165" x2="120" y2="165" stroke="#2C7A52" stroke-width="3"/>
-              <line x1="140" y1="165" x2="170" y2="165" stroke="#2C7A52" stroke-width="3"/>
-              <line x1="190" y1="165" x2="220" y2="165" stroke="#C9971F" stroke-width="3" stroke-dasharray="4 4"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">CC</span><span class="sub">Web App</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Web App</span><span class="status status-progress">In progress</span></div>
             <h3>CleP — Clearance Portal</h3>
@@ -69,32 +50,12 @@
               remotely. Requests move through a sequential multi-office digital signature workflow, and
               every finished document carries a cryptographic verification hash so institutions can confirm
               authenticity instantly.</p>
-            <div class="project-links">
-              <span class="project-note">Private repository · demo coming soon</span>
-            </div>
+            <div class="project-links"><span class="project-note">Private repository · demo coming soon</span></div>
           </div>
         </article>
 
-        <!-- PROJECT 2 -->
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="STEM Club platform illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <circle cx="120" cy="120" r="55" fill="none" stroke="#F3F4EE" stroke-width="4"/>
-              <circle cx="120" cy="120" r="8" fill="#C9971F"/>
-              <circle cx="120" cy="65" r="6" fill="#F3F4EE"/>
-              <circle cx="165" cy="150" r="6" fill="#F3F4EE"/>
-              <circle cx="75" cy="150" r="6" fill="#F3F4EE"/>
-              <line x1="120" y1="120" x2="120" y2="65" stroke="#F3F4EE" stroke-width="2"/>
-              <line x1="120" y1="120" x2="165" y2="150" stroke="#F3F4EE" stroke-width="2"/>
-              <line x1="120" y1="120" x2="75" y2="150" stroke="#F3F4EE" stroke-width="2"/>
-              <rect x="230" y="60" width="130" height="16" rx="2" fill="#F3F4EE"/>
-              <rect x="230" y="90" width="100" height="10" rx="2" fill="#C9971F"/>
-              <rect x="230" y="112" width="130" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-              <rect x="230" y="128" width="130" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-              <rect x="230" y="144" width="90" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">ES</span><span class="sub">Education Platform</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Education Platform</span><span class="status status-done">Completed</span></div>
             <h3>EADI STEM Club Hub</h3>
@@ -102,25 +63,12 @@
             <p class="small">A companion site for the STEM Club I run under EADI: lesson tracks, lab
               write-ups (including a titration-based fertilizer study), and event announcements for an
               upcoming AI Innovation &amp; Mathematics Hackathon.</p>
-            <div class="project-links">
-              <a href="https://github.com/" target="_blank" rel="noopener">GitHub Repo ↗</a>
-              <a href="#" onclick="alert('Live demo coming soon — .'); return false;">Live Demo</a>
-            </div>
+            <div class="project-links"><span class="project-note">GitHub repository coming soon</span></div>
           </div>
         </article>
 
-        <!-- PROJECT 3 -->
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Football academy portfolio illustration">
-              <rect width="400" height="250" fill="#C9971F"/>
-              <circle cx="200" cy="120" r="60" fill="#F3F4EE"/>
-              <polygon points="200,90 216,102 210,121 190,121 184,102" fill="#142433"/>
-              <rect x="60" y="190" width="280" height="10" rx="4" fill="#142433" opacity="0.85"/>
-              <rect x="90" y="205" width="60" height="8" rx="3" fill="#142433" opacity="0.5"/>
-              <rect x="250" y="205" width="60" height="8" rx="3" fill="#142433" opacity="0.5"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">WF</span><span class="sub">Sports Academy Website</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Sports Academy Website</span><span class="status status-progress">In progress</span></div>
             <h3>Wakama Football Academy</h3>
@@ -130,92 +78,42 @@
             <div class="project-links"><span class="project-note">Still being built</span></div>
           </div>
         </article>
-        
-<!-- PROJECT 4 -->
+
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Giftora Collections">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <circle cx="120" cy="120" r="55" fill="none" stroke="#F3F4EE" stroke-width="4"/>
-              <circle cx="120" cy="120" r="8" fill="#C9971F"/>
-              <circle cx="120" cy="65" r="6" fill="#F3F4EE"/>
-              <circle cx="165" cy="150" r="6" fill="#F3F4EE"/>
-              <circle cx="75" cy="150" r="6" fill="#F3F4EE"/>
-              <line x1="120" y1="120" x2="120" y2="65" stroke="#F3F4EE" stroke-width="2"/>
-              <line x1="120" y1="120" x2="165" y2="150" stroke="#F3F4EE" stroke-width="2"/>
-              <line x1="120" y1="120" x2="75" y2="150" stroke="#F3F4EE" stroke-width="2"/>
-              <rect x="230" y="60" width="130" height="16" rx="2" fill="#F3F4EE"/>
-              <rect x="230" y="90" width="100" height="10" rx="2" fill="#C9971F"/>
-              <rect x="230" y="112" width="130" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-              <rect x="230" y="128" width="130" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-              <rect x="230" y="144" width="90" height="8" rx="2" fill="#F3F4EE" opacity="0.6"/>
-            </svg>
-          </div>
+          <div class="project-thumb"><img src="images/giftora.jpg" alt="Screenshot of Giftora Collections" loading="lazy" width="1100" height="690"><span class="play">Visit live site ↗</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">E-commerce Platform</span><span class="status status-done">Completed</span></div>
-            <h3>Giftora Collections</h3>
+            <h3><a class="stretch" href="https://gidi-stem.github.io/giftoracollections/" target="_blank" rel="noopener">Giftora Collections</a></h3>
             <div class="project-meta"><span>Trade/Wholesale/Retail</span><span>Interactive delivery</span></div>
             <p class="small">An e-commerce site that links direct wholesalers to customers and retailers on a full chain.</p>
-            <div class="project-links">
-              <a href="https://gidi-stem.github.io/giftoracollections/" onclick="">See Giftora</a>
-            </div>
+            <div class="project-links"><span class="cta">Visit live site ↗</span></div>
           </div>
         </article>
 
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SOLAFIX Solar illustration">
-              <rect width="400" height="250" fill="#142433"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">SS</span><span class="sub">E-commerce Platform</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">E-commerce Platform</span><span class="status status-done">Completed</span></div>
-            <h3>SOLAFIX Solar</h3>
+            <h3><a class="stretch" href="https://github.com/Gidi-stem/solafix.co" target="_blank" rel="noopener">SOLAFIX Solar</a></h3>
             <div class="project-meta"><span>HTML/CSS/JS</span><span>E-commerce</span></div>
             <p class="small">A solar energy storefront with an animated loader and tiered membership plans for homes and small businesses.</p>
-            <div class="project-links"><a href="https://github.com/Gidi-stem/solafix.co" target="_blank" rel="noopener">GitHub Repo ↗</a></div>
+            <div class="project-links"><span class="cta">View repository ↗</span></div>
           </div>
         </article>
 
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skytop College Website illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#F3F4EE" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#F3F4EE"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#F3F4EE"/>
-            </svg>
-          </div>
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">SC</span><span class="sub">Institution Website</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Institution Website</span><span class="status status-done">Completed</span></div>
-            <h3>Skytop College Website</h3>
+            <h3><a class="stretch" href="https://github.com/Gidi-stem/skytopschool" target="_blank" rel="noopener">Skytop College Website</a></h3>
             <div class="project-meta"><span>HTML/CSS/JS</span><span>Multi-page</span></div>
             <p class="small">A four-page school website with a gallery, founder page and admissions information, in a sky blue, white, grey and red palette.</p>
-            <div class="project-links"><a href="https://github.com/Gidi-stem/skytopschool" target="_blank" rel="noopener">GitHub Repo ↗</a></div>
+            <div class="project-links"><span class="cta">View repository ↗</span></div>
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rebound Foundation Website illustration">
-              <rect width="400" height="250" fill="#C9971F"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#142433" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#142433"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#142433"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">RF</span><span class="sub">Community Website</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Community Website</span><span class="status status-progress">In progress</span></div>
             <h3>Rebound Foundation Website</h3>
@@ -236,40 +134,19 @@
         <p>Programs and learning tools I run and build to make science and mathematics accessible to Nigerian students.</p>
       </div>
       <div class="grid grid-3">
-
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EADI STEM Club Nigeria illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#F3F4EE" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#F3F4EE"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#F3F4EE"/>
-            </svg>
-          </div>
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">ES</span><span class="sub">STEM Program</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">STEM Program</span><span class="status status-ongoing">Ongoing</span></div>
-            <h3>EADI STEM Club Nigeria</h3>
+            <h3><a class="stretch" href="about.html">EADI STEM Club Nigeria</a></h3>
             <div class="project-meta"><span>Chemistry</span><span>Agro-tech</span><span>Software</span></div>
             <p class="small">A STEM club I founded under EADI. Learners work on hands-on topics such as soil chemistry and fertility, agro-tech, software development and green power solutions.</p>
-            <div class="project-links"><a href="about.html">Read my background</a></div>
+            <div class="project-links"><span class="cta">Read my background →</span></div>
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GESTAL: Virtual STEM Lab illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">GV</span><span class="sub">Learning Platform</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Learning Platform</span><span class="status status-progress">In progress</span></div>
             <h3>GESTAL: Virtual STEM Lab</h3>
@@ -279,18 +156,8 @@
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="University Course Quiz Suite illustration">
-              <rect width="400" height="250" fill="#2C3E50"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">UC</span><span class="sub">Learning Games</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Learning Games</span><span class="status status-progress">In progress</span></div>
             <h3>University Course Quiz Suite</h3>
@@ -299,7 +166,6 @@
             <div class="project-links"><span class="project-note">More courses added regularly</span></div>
           </div>
         </article>
-
       </div>
     </div>
   </section>
@@ -313,57 +179,29 @@
       </div>
       <div class="grid grid-3">
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Geometry Lab illustration">
-              <rect width="400" height="250" fill="#142433"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+          <div class="project-thumb"><img src="images/geometry-lab.jpg" alt="Screenshot of Geometry Lab" loading="lazy" width="1100" height="690"><span class="play">Play now ▶</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Geometry · Proofs</span><span class="status status-done">Completed</span></div>
-            <h3>Geometry Lab</h3>
+            <h3><a class="stretch" href="games/geometry-lab.html" target="_blank" rel="noopener">Geometry Lab</a></h3>
             <div class="project-meta"><span>React</span><span>Geometry</span><span>Proofs</span></div>
             <p class="small">An interactive geometry lab built around triangle theorems: guided lessons with worked examples, a Proof Laboratory with eight proofs that checks every step and reason, a timed Challenge Arena of 34 questions, and a teacher mode for presenting in class.</p>
-            <div class="project-links"><a href="games/geometry-lab.html" target="_blank" rel="noopener">Play Geometry Lab ↗</a></div>
+            <div class="project-links"><span class="cta">Play now ▶</span></div>
           </div>
         </article>
 
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Digital SAT Algebra Test illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <path d="M60 195 V55 M60 195 H345" stroke="#F3F4EE" stroke-width="3" stroke-linecap="round" fill="none"/>
-              <path d="M75 175 L335 70" stroke="#C9971F" stroke-width="5" stroke-linecap="round" fill="none"/>
-              <circle cx="140" cy="149" r="8" fill="#F3F4EE"/>
-              <circle cx="270" cy="96" r="8" fill="#F3F4EE"/>
-            </svg>
-          </div>
+          <div class="project-thumb"><img src="images/sat-algebra-test.jpg" alt="Screenshot of Digital SAT Algebra Test" loading="lazy" width="1100" height="690"><span class="play">Take the test ▶</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">SAT Algebra</span><span class="status status-done">Completed</span></div>
-            <h3>Digital SAT Algebra Test</h3>
+            <h3><a class="stretch" href="games/sat-algebra-test.html" target="_blank" rel="noopener">Digital SAT Algebra Test</a></h3>
             <div class="project-meta"><span>HTML/CSS/JS</span><span>40 questions</span><span>Graphing calculator</span></div>
             <p class="small">A 40-question practice test on linear equations, functions, slope and graphs. It has a built-in Desmos-style graphing calculator on every question (equations, sliders, tables, best-fit line, click-to-read coordinates), step-by-step hints, a test and a practice mode, and a skill-by-skill results page.</p>
-            <div class="project-links"><a href="games/sat-algebra-test.html" target="_blank" rel="noopener">Take the test ↗</a></div>
+            <div class="project-links"><span class="cta">Take the test ▶</span></div>
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Number Dojo illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#F3F4EE" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#F3F4EE"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#F3F4EE"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">ND</span><span class="sub">Grade 8 Math</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Grade 8 Math</span><span class="status status-done">Completed</span></div>
             <h3>Number Dojo</h3>
@@ -373,18 +211,8 @@
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parabola Launch illustration">
-              <rect width="400" height="250" fill="#C9971F"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#142433" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#142433"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#142433"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">PL</span><span class="sub">Grade 10 Math</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Grade 10 Math</span><span class="status status-done">Completed</span></div>
             <h3>Parabola Launch</h3>
@@ -394,18 +222,8 @@
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ziggy's Math Quest illustration">
-              <rect width="400" height="250" fill="#2C3E50"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">ZM</span><span class="sub">Grade 5 Math</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Grade 5 Math</span><span class="status status-done">Completed</span></div>
             <h3>Ziggy's Math Quest</h3>
@@ -415,18 +233,8 @@
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quadratic Quest illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#C9971F" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#C9971F"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#C9971F" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#C9971F"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">QQ</span><span class="sub">SAT Math</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">SAT Math</span><span class="status status-done">Completed</span></div>
             <h3>Quadratic Quest</h3>
@@ -437,38 +245,18 @@
         </article>
 
         <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Domain, Range &amp; End Behavior illustration">
-              <rect width="400" height="250" fill="#142433"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#2C7A52" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#2C7A52"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#2C7A52" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#2C7A52" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#2C7A52" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#2C7A52"/>
-            </svg>
-          </div>
+          <div class="project-thumb"><img src="images/domain-range.jpg" alt="Screenshot of Domain, Range &amp; End Behavior" loading="lazy" width="1100" height="690"><span class="play">Play now ▶</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Algebra</span><span class="status status-done">Completed</span></div>
-            <h3>Domain, Range &amp; End Behavior</h3>
+            <h3><a class="stretch" href="games/domain-range-end-behavior.html" target="_blank" rel="noopener">Domain, Range &amp; End Behavior</a></h3>
             <div class="project-meta"><span>HTML/CSS/JS</span><span>50 questions</span><span>5 levels</span></div>
             <p class="small">A colourful game on domain, range and end behavior for linear functions and arithmetic sequences, with five escalating difficulty levels and scaling points.</p>
-            <div class="project-links"><span class="project-note">Playable version coming soon</span></div>
+            <div class="project-links"><span class="cta">Play now ▶</span></div>
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Systems of Equations Challenge illustration">
-              <rect width="400" height="250" fill="#1B6B65"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#F3F4EE" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#F3F4EE"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#F3F4EE" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#F3F4EE"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">SO</span><span class="sub">Algebra</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Algebra</span><span class="status status-done">Completed</span></div>
             <h3>Systems of Equations Challenge</h3>
@@ -478,18 +266,8 @@
           </div>
         </article>
 
-        <article class="project-card">
-          <div class="project-thumb">
-            <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timed Math Drills illustration">
-              <rect width="400" height="250" fill="#C9971F"/>
-              <rect x="50" y="50" width="300" height="150" rx="4" fill="none" stroke="#142433" stroke-width="3"/>
-              <rect x="70" y="72" width="140" height="14" rx="2" fill="#142433"/>
-              <rect x="70" y="102" width="260" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="120" width="220" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <rect x="70" y="138" width="180" height="8" rx="2" fill="#142433" opacity="0.55"/>
-              <circle cx="310" cy="165" r="14" fill="#142433"/>
-            </svg>
-          </div>
+        <article class="project-card is-soon">
+          <div class="project-thumb tile" aria-hidden="true"><span class="mono">TM</span><span class="sub">Math Fluency</span></div>
           <div class="project-body">
             <div class="badge-row"><span class="tag">Math Fluency</span><span class="status status-done">Completed</span></div>
             <h3>Timed Math Drills</h3>
@@ -498,7 +276,6 @@
             <div class="project-links"><span class="project-note">Playable version coming soon</span></div>
           </div>
         </article>
-
       </div>
     </div>
   </section>

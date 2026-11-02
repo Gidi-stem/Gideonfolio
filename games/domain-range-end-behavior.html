@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domain, Range &amp; End Behavior — Wakama's ED Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-a:#5B2A9C;
+    --bg-b:#2B4FD6;
+    --ink:#20223A;
+    --ink-soft:#5B5E78;
+    --card:#FFFFFF;
+    --correct:#1E9E5A;
+    --correct-bg:#E1F7EA;
+    --wrong:#E63950;
+    --wrong-bg:#FDE6E9;
+    --gold:#FFC93C;
+    --lvl1:#2ECC71;
+    --lvl2:#17C1C7;
+    --lvl3:#4C6FFF;
+    --lvl4:#FF9130;
+    --lvl5:#FF4D8D;
+    --font-display:'Baloo 2', 'Comic Sans MS', 'Segoe UI', sans-serif;
+    --font-body:'Nunito', -apple-system, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.16), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(255,255,255,0.14), transparent 45%),
+      linear-gradient(135deg, var(--bg-a), var(--bg-b));
+    background-attachment:fixed;
+    font-family:var(--font-body);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:40px 16px 70px;
+  }
+  .wrap{
+    width:100%;
+    max-width:600px;
+  }
+
+  .brand-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--font-display);
+    font-size:0.95rem;
+    font-weight:700;
+    color:#fff;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.4);
+    padding:7px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  h1{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:2rem;
+    line-height:1.15;
+    color:#fff;
+    margin:0 0 8px;
+    text-shadow:0 2px 0 rgba(0,0,0,0.15);
+  }
+  .meta-line{
+    font-size:0.92rem;
+    color:rgba(255,255,255,0.85);
+    margin:0 0 24px;
+    font-weight:600;
+  }
+
+  /* top stat bar */
+  .stat-bar{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .stat-chip{
+    flex:1;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:14px;
+    padding:10px 12px;
+    text-align:center;
+    color:#fff;
+  }
+  .stat-chip .val{
+    font-family:var(--font-display);
+    font-size:1.25rem;
+    font-weight:700;
+    display:block;
+  }
+  .stat-chip .lbl{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    opacity:0.85;
+  }
+
+  .progress-track{
+    height:12px;
+    background:rgba(255,255,255,0.25);
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:26px;
+    border:1px solid rgba(255,255,255,0.3);
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    border-radius:8px;
+    transition:width .35s ease, background .35s ease;
+  }
+
+  .level-up-banner{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:1.1rem;
+    color:#3A2A00;
+    background:linear-gradient(90deg, #FFE27A, #FFC93C);
+    border-radius:14px;
+    padding:12px;
+    margin-bottom:18px;
+    box-shadow:0 6px 0 rgba(0,0,0,0.12);
+  }
+  .level-up-banner.show{ display:flex; }
+
+  .card{
+    background:var(--card);
+    border-radius:22px;
+    padding:26px 24px 22px;
+    box-shadow:0 14px 0 rgba(0,0,0,0.12);
+    border-top:10px solid var(--lvl1);
+    position:relative;
+  }
+  .level-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:0.85rem;
+    color:#fff;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .topic-tag{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin:0 0 10px;
+  }
+  .prompt{
+    font-size:1.15rem;
+    font-weight:700;
+    line-height:1.5;
+    margin:0 0 20px;
+    color:var(--ink);
+  }
+  .options{ display:flex; flex-direction:column; gap:10px; }
+  .option{
+    text-align:left;
+    background:#F4F4FB;
+    border:2px solid transparent;
+    border-radius:14px;
+    padding:13px 16px;
+    font-size:1rem;
+    font-weight:600;
+    font-family:var(--font-body);
+    color:var(--ink);
+    cursor:pointer;
+    transition:transform .1s ease, border-color .15s ease, background .15s ease;
+  }
+  .option:hover:not(:disabled){
+    border-color:var(--lvl3);
+    transform:translateY(-1px);
+  }
+  .option:disabled{ cursor:default; }
+  .option.correct{ border-color:var(--correct); background:var(--correct-bg); color:var(--correct); }
+  .option.wrong{ border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong); }
+
+  .hint-row{ margin-top:14px; }
+  .hint-btn{
+    background:none; border:none; color:var(--ink-soft);
+    font-size:0.85rem; font-weight:700; padding:0; cursor:pointer;
+    text-decoration:underline; text-decoration-style:dotted;
+  }
+  .hint-text{ margin-top:8px; font-size:0.9rem; color:var(--ink-soft); font-style:italic; display:none; }
+  .hint-text.show{ display:block; }
+
+  .feedback{ margin-top:16px; padding:14px 16px; border-radius:14px; font-size:0.95rem; line-height:1.5; display:none; }
+  .feedback.show{ display:block; }
+  .feedback.correct-fb{ background:var(--correct-bg); color:var(--correct); }
+  .feedback.wrong-fb{ background:var(--wrong-bg); color:var(--wrong); }
+  .feedback .verdict{ font-weight:800; display:block; margin-bottom:4px; font-family:var(--font-display); }
+  .feedback .explain{ color:var(--ink); font-weight:600; }
+  .feedback .pts{ display:block; margin-top:6px; font-weight:800; color:var(--gold); text-shadow:0 1px 0 rgba(0,0,0,0.1); }
+
+  .nav-row{ margin-top:22px; display:flex; justify-content:flex-end; }
+  .next-btn{
+    background:var(--ink); color:#fff; border:none; border-radius:14px;
+    padding:12px 24px; font-size:1rem; font-family:var(--font-display);
+    font-weight:700; cursor:pointer; opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .1s ease;
+    box-shadow:0 5px 0 rgba(0,0,0,0.2);
+  }
+  .next-btn.show{ opacity:1; pointer-events:auto; }
+  .next-btn:active{ transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,0.2); }
+
+  .results{ display:none; text-align:center; padding:30px 24px; }
+  .results.show{ display:block; }
+  .trophy{ font-size:3rem; margin-bottom:6px; }
+  .score-num{ font-family:var(--font-display); font-size:3rem; font-weight:800; margin:0; color:var(--ink); }
+  .score-label{ color:var(--ink-soft); margin:2px 0 22px; font-weight:700; }
+  .points-total{
+    font-family:var(--font-display);
+    font-size:1.3rem;
+    color:#8A6A00;
+    background:linear-gradient(90deg,#FFE27A,#FFC93C);
+    display:inline-block;
+    padding:8px 20px;
+    border-radius:999px;
+    margin-bottom:24px;
+    font-weight:800;
+  }
+  .breakdown{ text-align:left; display:flex; flex-direction:column; gap:8px; margin:0 0 26px; }
+  .breakdown-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px; border-radius:12px; font-size:0.92rem; font-weight:700;
+    background:#F4F4FB;
+  }
+  .breakdown-row .dot{ display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; }
+  .restart-btn{
+    background:var(--lvl3); border:none; color:#fff;
+    border-radius:14px; padding:13px 26px; font-family:var(--font-display);
+    font-weight:700; font-size:1rem; cursor:pointer;
+    box-shadow:0 5px 0 rgba(0,0,0,0.18);
+  }
+  .restart-btn:active{ transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,0.18); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="brand-tag">🎮 Wakama's ED Games</span>
+  <h1>Domain, Range &amp; End Behavior</h1>
+  <p class="meta-line">Linear functions vs. arithmetic sequences — 50 questions, 5 levels, gets tougher as you go</p>
+
+  <div class="stat-bar">
+    <div class="stat-chip"><span class="val" id="qNumChip">1/50</span><span class="lbl">Question</span></div>
+    <div class="stat-chip"><span class="val" id="pointsChip">0</span><span class="lbl">Points</span></div>
+    <div class="stat-chip"><span class="val" id="streakChip">0</span><span class="lbl">Streak</span></div>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="level-up-banner" id="levelUpBanner">🎉 Level up! <span id="levelUpText"></span></div>
+
+  <div class="card" id="quizCard">
+    <span class="level-badge" id="levelBadge"></span>
+    <p class="topic-tag" id="sectionTag"></p>
+    <p class="prompt" id="promptText"></p>
+    <div class="options" id="optionsWrap"></div>
+
+    <div class="hint-row">
+      <button class="hint-btn" id="hintBtn">💡 Show a hint</button>
+      <div class="hint-text" id="hintText"></div>
+    </div>
+
+    <div class="feedback" id="feedback">
+      <span class="verdict" id="feedbackVerdict"></span>
+      <span class="explain" id="feedbackExplain"></span>
+      <span class="pts" id="feedbackPts"></span>
+    </div>
+
+    <div class="nav-row">
+      <button class="next-btn" id="nextBtn">Next question</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="trophy" id="trophyEmoji">🏆</div>
+    <p class="score-num" id="finalScore">0/50</p>
+    <p class="score-label">correct answers</p>
+    <div class="points-total" id="finalPoints">⭐ 0 points</div>
+    <div class="breakdown" id="breakdown"></div>
+    <button class="restart-btn" id="restartBtn">🔄 Play again</button>
+  </div>
+</div>
+
+<script>
+const LEVELS = [
+  {name:"Warm-Up",     emoji:"🌱", color:"#2ECC71", pts:10},
+  {name:"Getting Sharper", emoji:"⚡", color:"#17C1C7", pts:20},
+  {name:"Building Speed",  emoji:"🚀", color:"#4C6FFF", pts:30},
+  {name:"Challenge Zone",  emoji:"🔥", color:"#FF9130", pts:40},
+  {name:"Master Level",    emoji:"👑", color:"#FF4D8D", pts:50}
+];
+
+const QUESTIONS = [
+// LEVEL 1 — Warm-Up
+{s:"Linear Functions",p:"What is the domain of the linear function y = 3x - 2?",o:["All real numbers","All positive numbers","Only integers","{x | x \u2265 0}"],c:0,h:"Unless a problem says otherwise, what x-values can you plug into a straight line?",e:"A non-restricted linear function accepts any real number as input — the line stretches infinitely left and right."},
+{s:"Linear Functions",p:"What is the range of y = 3x - 2 (a line that isn't horizontal)?",o:["All real numbers","Only positive numbers","{y | y \u2265 -2}","Only integers"],c:0,h:"Since the line keeps rising or falling forever, how far up and down does it go?",e:"A line with nonzero slope extends infinitely upward and downward, so every real y-value is eventually reached."},
+{s:"Sequences",p:"What is the domain of the arithmetic sequence a\u2099 = 5n - 2?",o:["Positive integers: 1, 2, 3, ...","All real numbers","All integers, including negatives","Only even numbers"],c:0,h:"A sequence's inputs are term positions — can you have a \"2.5th\" term?",e:"Sequences are only defined at whole-number term positions (n = 1, 2, 3, ...), which makes them discrete rather than continuous."},
+{s:"Comparing the Two",p:"Why is the domain of a sequence different from the domain of a linear function, even if they share a similar rule?",o:["A sequence only makes sense at whole-number positions, while a function can take any real input","They're actually identical","A sequence has an infinite domain just like a function","A sequence's domain depends on its y-values"],c:0,h:"Think about what n actually represents in a sequence — a position in a list, not just any number.",e:"n stands for a term number (1st, 2nd, 3rd term...), so only positive integers make sense — unlike x in a function, which can be any real number."},
+{s:"End Behavior",p:"For the linear function y = 2x - 3, what happens as x \u2192 \u221e?",o:["y \u2192 \u221e","y \u2192 -\u221e","y \u2192 0","y approaches a fixed number"],c:0,h:"The slope is positive — what does that mean for the line as x grows?",e:"With a positive slope, y keeps increasing without bound as x increases."},
+{s:"End Behavior",p:"For the linear function y = -4x - 5, what happens as x \u2192 -\u221e?",o:["y \u2192 \u221e","y \u2192 -\u221e","y \u2192 0","y stays the same"],c:0,h:"A negative slope means the line's direction flips depending on which way x moves.",e:"As x \u2192 -\u221e, -4x becomes a very large positive number, so y \u2192 \u221e."},
+{s:"End Behavior",p:"For an increasing arithmetic sequence (d > 0), what happens to a\u2099 as n \u2192 \u221e?",o:["a\u2099 \u2192 \u221e","a\u2099 \u2192 -\u221e","a\u2099 oscillates forever","a\u2099 approaches 0"],c:0,h:"If you keep adding a positive number over and over, where do the terms head?",e:"Each term adds d again, so with d > 0 the terms grow without bound."},
+{s:"End Behavior",p:"For a decreasing arithmetic sequence (d < 0), what happens to a\u2099 as n \u2192 \u221e?",o:["a\u2099 \u2192 -\u221e","a\u2099 \u2192 \u221e","a\u2099 approaches a constant","a\u2099 oscillates forever"],c:0,h:"If you keep adding a negative number over and over, where do the terms head?",e:"Each term adds a negative d, so the terms keep shrinking without bound."},
+{s:"Sequences",p:"What best describes the range of an increasing arithmetic sequence starting at a\u2081 with common difference d > 0?",o:["The discrete set {a\u2081, a\u2081+d, a\u2081+2d, ...}","All real numbers \u2265 a\u2081","All real numbers","Just {a\u2081}"],c:0,h:"A sequence only produces specific separate values, not everything in between.",e:"A sequence's range is the specific list of terms it produces — discrete points, not a continuous interval."},
+{s:"Comparing the Two",p:"Which is true: the graph of a linear function is a solid connected line, while the graph of an arithmetic sequence is a series of separate points.",o:["True", "False", "Only true for increasing sequences", "Only true for negative slopes"],c:0,h:"Picture plotting whole numbers 1, 2, 3... versus plotting every possible x-value.",e:"A function's domain (all reals) draws a connected line; a sequence's domain (whole numbers only) draws isolated dots."},
+
+// LEVEL 2 — Getting Sharper
+{s:"Sequences",p:"A sequence begins (1, 7), (2, 4), (3, 1), (4, -2) and continues by the same pattern. In general, what is its domain?",o:["{1, 2, 3, 4, ...} — all positive integers","{-2, 1, 4, 7}","{1, 2, 3, 4} only","All real numbers"],c:0,h:"Don't confuse the domain (term positions) with the values shown so far.",e:"The domain of a sequence is always the positive integers used as term numbers, not just the handful of terms you happen to see."},
+{s:"Sequences",p:"For that same sequence (1,7), (2,4), (3,1), (4,-2), what is d, and where do the terms head as n \u2192 \u221e?",o:["d = -3, terms \u2192 -\u221e","d = 3, terms \u2192 \u221e","d = -3, terms \u2192 0","d = -3, terms \u2192 \u221e"],c:0,h:"Subtract consecutive terms to find d, then decide the direction.",e:"4-7=-3, 1-4=-3, -2-1=-3, so d=-3. Since d is negative, the terms decrease without bound."},
+{s:"Linear Functions",p:"If y = 2x - 3 is restricted to the inputs {1, 2, 3, 4, 5}, what is the resulting range?",o:["{-1, 1, 3, 5, 7}","All real numbers","{1, 2, 3, 4, 5}","{-3, -1, 1, 3, 5}"],c:0,h:"Plug each x-value in one at a time.",e:"x=1\u2192-1, x=2\u21921, x=3\u21923, x=4\u21925, x=5\u21927, giving the range {-1, 1, 3, 5, 7}."},
+{s:"Linear Functions",p:"A linear function's domain and range are usually both \"all real numbers\" — unless what happens?",o:["The line is restricted to specific x-values, or it's a horizontal line","It has a positive slope","It passes through the origin","It has integer coefficients"],c:0,h:"Think about what changes when a line has zero slope, or when a problem limits which x-values are allowed.",e:"A horizontal line only ever outputs one y-value, and any stated restriction on x will limit the domain to less than all reals."},
+{s:"Linear Functions",p:"What is the range of the horizontal line y = 4?",o:["{4} only","All real numbers","{0, 4}","There is no range"],c:0,h:"A horizontal line never changes height, no matter what x is.",e:"Every point on y = 4 has the same y-value, so the range is just the single value 4."},
+{s:"End Behavior",p:"As n \u2192 \u221e for the sequence a\u2099 = -5n + 100, what is the end behavior?",o:["a\u2099 \u2192 -\u221e","a\u2099 \u2192 \u221e","a\u2099 approaches 100","a\u2099 approaches 0"],c:0,h:"Check the sign of the coefficient in front of n.",e:"The coefficient of n is -5, which is negative, so the terms decrease without bound as n grows."},
+{s:"End Behavior",p:"Which correctly describes the end behavior of a line with negative slope as x \u2192 \u221e?",o:["As x \u2192 \u221e, y \u2192 -\u221e","As x \u2192 \u221e, y \u2192 \u221e","As x \u2192 \u221e, y \u2192 0","As x \u2192 \u221e, y stays constant"],c:0,h:"A negative slope means the line falls as you move right.",e:"With negative slope, increasing x makes the line fall further and further, so y \u2192 -\u221e."},
+{s:"Sequences",p:"A sequence counts something like \"day number.\" Why can't its domain include values like n = 2.5 or n = -1?",o:["Because n represents a whole, sequential position — like a day or term number","Because 2.5 is irrational","Because negative numbers are always excluded from math","Because sequences must always start at 0"],c:0,h:"What would \"day 2.5\" or \"day -1\" even mean here?",e:"n has to be a positive whole number because it labels a specific position in the sequence — there's no such thing as term number 2.5 or -1."},
+{s:"Comparing the Two",p:"Which one has a smooth, unbroken graph: a linear function or an arithmetic sequence?",o:["Linear function","Arithmetic sequence","Both are smooth and unbroken","Neither is smooth"],c:0,h:"Think about whether the domain includes every real number or just whole-number positions.",e:"A linear function's domain includes every real number, so its graph is one continuous line. A sequence only has isolated points."},
+{s:"End Behavior",p:"For the constant sequence 20, 20, 20, 20, ... (d = 0), what is the end behavior as n \u2192 \u221e?",o:["a\u2099 stays at 20 forever","a\u2099 \u2192 \u221e","a\u2099 \u2192 -\u221e","a\u2099 oscillates"],c:0,h:"If nothing is ever added or subtracted, does the value change at all?",e:"With d = 0, every term is identical, so the sequence neither grows nor shrinks — it just stays at 20."},
+
+// LEVEL 3 — Building Speed
+{s:"Linear Functions",p:"y = -x + 7 is restricted so x can only be a whole number from 0 to 10. What is its domain?",o:["{0, 1, 2, ..., 10}","All real numbers","{x | x \u2265 0}","{-x, 7}"],c:0,h:"A stated restriction always overrides the usual \"all real numbers\" rule.",e:"Once a problem restricts x to specific whole numbers in a range, the domain becomes exactly that finite set."},
+{s:"Sequences",p:"A sequence has a\u2081 = 100 and d = -8. As n \u2192 \u221e, what happens to a\u2099?",o:["a\u2099 \u2192 -\u221e","a\u2099 \u2192 \u221e","a\u2099 approaches 100","a\u2099 approaches 0"],c:0,h:"Look only at the sign of d — the starting value doesn't affect the long-run direction.",e:"With a negative common difference, the terms keep decreasing forever, regardless of where they started."},
+{s:"Linear Functions",p:"What is true about the horizontal line y = 6?",o:["Domain: all real numbers. Range: {6}","Domain: {6}. Range: all real numbers","Domain and range are both {6}","Domain and range are both all real numbers"],c:0,h:"x can be anything, but y never changes.",e:"A horizontal line accepts every x-value (domain = all reals) but only ever outputs one y-value (range = {6})."},
+{s:"Sequences",p:"A sequence goes 2, 5, 8, 11, .... Which best describes its range?",o:["The discrete, ever-increasing set {2, 5, 8, 11, ...}","All real numbers \u2265 2","{2, 5, 8, 11} only, since the pattern stops there","All multiples of 3"],c:0,h:"The range keeps growing forever — but only at the specific values the sequence actually lands on.",e:"Since d = 3 > 0, the sequence increases forever, but it only ever hits the exact terms it generates — not every real number in between."},
+{s:"Linear Functions",p:"For y = 3x + 5 restricted to domain x \u2265 0, what is the range?",o:["{y | y \u2265 5}","All real numbers","{y | y \u2264 5}","{5}"],c:0,h:"Find the y-value at the smallest allowed x, then decide which direction y goes from there.",e:"At x=0, y=5. Since the slope is positive and x only increases from 0, y only ever goes up from 5."},
+{s:"Linear Functions",p:"For y = -2x + 10 restricted to domain x \u2265 0, what is the range?",o:["{y | y \u2264 10}","{y | y \u2265 10}","All real numbers","{10}"],c:0,h:"Find y at x = 0, then think about which way a negative slope pushes y as x grows.",e:"At x=0, y=10. Since the slope is negative and x only increases, y can only decrease from 10 onward."},
+{s:"Comparing the Two",p:"Sequence A: a\u2099 = 3n + 1. Sequence B: b\u2099 = -3n + 50. Which one approaches -\u221e as n \u2192 \u221e?",o:["Sequence B","Sequence A","Both do","Neither does"],c:0,h:"Check the sign in front of n for each sequence.",e:"Sequence B has a common difference of -3 (negative), so it decreases without bound. Sequence A has d = 3 and increases forever."},
+{s:"Comparing the Two",p:"Which one can take on every value in between its lowest and highest points, with no gaps?",o:["A linear function","An arithmetic sequence","Both, equally","Neither"],c:0,h:"Think about whether the domain is every real number or just whole-number positions.",e:"A linear function is continuous, so it passes through every value in between. A sequence jumps by d each time, leaving gaps."},
+{s:"Sequences",p:"A sequence has common difference d = 0.5. Does its range include every real number between consecutive terms, the way a continuous function would?",o:["No — it still only hits values spaced 0.5 apart","Yes — fractions allow decimals in between","Only if d is negative","Only if a\u2081 = 0"],c:0,h:"A sequence is still discrete no matter how small its common difference gets.",e:"Even with a fractional step, a sequence only ever lands on specific values 0.5 apart — it never fills in the space between them."},
+{s:"Sequences",p:"A car's odometer reading after n trips follows a\u2099 = 40000 + 250n, where n counts completed trips starting at n = 0. What is an appropriate domain?",o:["{0, 1, 2, 3, ...}","{1, 2, 3, ...}","All real numbers \u2265 0","{40000, 40250, 40500, ...}"],c:0,h:"The domain describes the trip *numbers*, not the odometer readings themselves.",e:"Since n starts at 0 trips completed and only takes whole-number values, the domain is the non-negative integers."},
+{s:"End Behavior",p:"What is the domain and long-run direction of a\u2099 = -26n + 64 as n \u2192 \u221e?",o:["Domain: positive integers; a\u2099 \u2192 -\u221e","Domain: all reals; a\u2099 \u2192 -\u221e","Domain: positive integers; a\u2099 \u2192 \u221e","Domain: all reals; a\u2099 \u2192 \u221e"],c:0,h:"Sequences always have the same type of domain — check the sign of the n-coefficient for direction.",e:"Every arithmetic sequence has a domain of positive integers, and since the coefficient of n is negative, the terms decrease forever."},
+
+// LEVEL 4 — Challenge Zone
+{s:"Comparing the Two",p:"A sequence's explicit formula matches a line's equation exactly (both are y = 2n - 1). Why isn't the sequence's graph identical to the line's graph?",o:["The sequence only plots points at whole-number n, even though the formula matches","They actually are identical graphs","The sequence has fewer total points, but the same domain","The formulas must be different for the graphs to differ"],c:0,h:"Matching formulas don't guarantee matching domains.",e:"Sharing a formula only means the rule is the same — the sequence still restricts its inputs to whole numbers, giving isolated dots instead of a solid line."},
+{s:"Sequences",p:"For a\u2099 = -2n + 15, at which term number does the sequence first become negative?",o:["n = 8","n = 7","n = 7.5","n = 15"],c:0,h:"Solve -2n + 15 < 0, then round up to the next whole number.",e:"-2n + 15 < 0 gives n > 7.5. Since n must be a whole number, the first negative term is at n = 8."},
+{s:"Linear Functions",p:"If y = 4x - 1 has a domain of all real numbers (and a range of all real numbers too), what is the domain of its inverse function?",o:["All real numbers","{4, -1}","Only positive numbers","Cannot be determined"],c:0,h:"An inverse function swaps domain and range with the original.",e:"The domain of an inverse equals the range of the original function. Since the original's range is all reals, so is the inverse's domain."},
+{s:"Sequences",p:"A sequence has a\u2081 = 7 and d = -1.5. Does it ever hit exactly 0?",o:["No — the term number would have to be 5.67, which isn't a whole number","Yes, at n = 5","Yes, at n = 6","Cannot be determined"],c:0,h:"Set the explicit formula equal to 0 and solve for n — then check if it's a whole number.",e:"a\u2099 = 8.5 - 1.5n. Setting this to 0 gives n \u2248 5.67, which isn't a valid term number, so the sequence steps over 0 without landing on it."},
+{s:"End Behavior",p:"Which end behavior is impossible for an arithmetic sequence?",o:["Leveling off toward some number without ever reaching it","Increasing forever","Decreasing forever","Staying constant forever"],c:0,h:"Arithmetic sequences change by the same fixed amount every time — is there any mechanism for them to slow down?",e:"Because the difference between terms is always the same fixed amount d, a sequence can never \"level off\" toward a limit — that kind of curved, slowing behavior belongs to other function types, not linear ones."},
+{s:"Comparing the Two",p:"Lines y = 5x - 3 and y = 5x + 10 share the same slope. How do their end behaviors compare as x \u2192 \u221e?",o:["Both go to \u221e at the same rate, since they share the same slope","They diverge at completely different rates","Only one of them goes to \u221e","They eventually intersect and then match exactly"],c:0,h:"End behavior direction and rate depend only on the slope — not the y-intercept.",e:"Since both lines have slope 5, they increase at the exact same rate as x grows, just offset vertically by different y-intercepts."},
+{s:"Sequences",p:"A sequence has d = 0. Which best describes both its range and its end behavior?",o:["Range is a single repeated value; end behavior is constant, never approaching \u00b1\u221e","Range is all real numbers; end behavior diverges","Range is empty; end behavior is undefined","Range grows slowly; end behavior approaches \u221e"],c:0,h:"If nothing is ever added, every single term is identical to the one before it.",e:"With d = 0, the sequence never changes, so its range is just one repeated value and it neither grows nor shrinks."},
+{s:"Linear Functions",p:"If a line's domain is restricted to a closed interval like [2, 8], does the idea of \"end behavior as x \u2192 \u221e\" still apply?",o:["No — end behavior describes what happens as x becomes infinitely large or small, which can't happen in a bounded domain","Yes, it always applies to every line","Only if the slope is positive","Only if the interval is very wide"],c:0,h:"End behavior is specifically about what happens far out toward infinity.",e:"A restricted, bounded domain means x never actually approaches infinity, so \"end behavior\" in the traditional sense doesn't apply."},
+{s:"Sequences",p:"A sequence goes 12, 7, 2, -3, .... Which term number is the first to fall below -50?",o:["n = 14","n = 13","n = 15","n = 10"],c:0,h:"Find d and a\u2081, build the explicit formula, then solve the inequality.",e:"d = -5, a\u2081 = 12, so a\u2099 = 17 - 5n. Setting 17 - 5n < -50 gives n > 13.4, so the 14th term is the first below -50."},
+{s:"Comparing the Two",p:"Sequence a\u2099 = 3n - 1 and line y = 3x - 1 share the same formula. For which inputs do they output the exact same value?",o:["At every whole-number input, since n and x are just different names for the same rule","Never — they're unrelated despite looking similar","Only when x equals 0","Only when the input is negative"],c:0,h:"Plug the same whole number into both formulas and compare.",e:"Since the formulas are identical, plugging in any whole number for both n and x gives matching outputs — the sequence is essentially the line sampled only at whole numbers."},
+{s:"End Behavior",p:"Small positive slope (y = 0.0001x + 2) vs. steep positive slope (y = 1000x + 2) — how do their end behaviors compare as x \u2192 \u221e?",o:["Both eventually go to \u221e — slope size affects speed, not direction","The tiny-slope line approaches a constant instead of \u221e","Only the steep line goes to \u221e","They go in opposite directions"],c:0,h:"Direction of end behavior depends on the sign of the slope, not how big or small it is.",e:"Any positive slope, no matter how small, still sends y toward \u221e as x grows — it just gets there more slowly than a steep line would."},
+
+// LEVEL 5 — Master Level
+{s:"Sequences",p:"A sequence is only defined for n = 1 through 20 (a finite sequence). How does its domain differ from an infinite arithmetic sequence, and does \"end behavior as n \u2192 \u221e\" apply?",o:["Its domain is the finite set {1, ..., 20}, and end behavior as n \u2192 \u221e doesn't apply since the sequence stops","It behaves exactly like an infinite sequence in every way","End behavior still describes what happens after n = 20","Its domain becomes all real numbers once it's finite"],c:0,h:"If a list has a last entry, can you still ask what happens \"forever after\"?",e:"A finite sequence simply stops — there's no n \u2192 \u221e to describe, since the domain never goes past 20."},
+{s:"Linear Functions",p:"Which combination is impossible for a standard, unrestricted linear function?",o:["Domain = all reals, range = {7} only, with the line also diverging to \u00b1\u221e in both directions","Domain = all reals, range = all reals, diverging both directions","Domain = all reals, range = {7}, staying constant","Domain = all reals, range = all reals, one direction \u221e and the other -\u221e"],c:0,h:"A range of just {7} can only happen with one specific type of slope — think about what that implies for end behavior.",e:"A range of exactly {7} only happens when the slope is 0 (a horizontal line) — and a horizontal line never diverges to \u00b1\u221e, so this combination contradicts itself."},
+{s:"Sequences",p:"A sequence has d > 0 but starts very negative, at a\u2081 = -1000. Does its range stay negative forever?",o:["No — since d > 0, the terms eventually become positive and keep increasing to \u221e","Yes, it stays negative forever","It stays close to 0 forever","Cannot be determined without more information"],c:0,h:"The starting value only shifts where the sequence begins — it doesn't change the long-run direction set by d.",e:"With d > 0, the sequence always climbs eventually past 0 and keeps increasing without bound, regardless of how negative it started."},
+{s:"Comparing the Two",p:"Two arithmetic sequences share the same d but have different a\u2081 values. How do their end behaviors compare as n \u2192 \u221e?",o:["Same direction (both \u2192\u221e or both \u2192-\u221e, since d has the same sign), just offset by a constant gap","Opposite directions","They become identical eventually","They can't be compared without knowing a\u2081"],c:0,h:"The direction of end behavior depends only on the sign of d, not on the starting value.",e:"Since both sequences share the same d, they head in the same direction at the same rate — the different a\u2081 values just create a constant vertical gap between them."},
+{s:"Sequences",p:"True or false: every arithmetic sequence's range is bounded on at least one side (has a minimum or a maximum, but not both) — unless d = 0.",o:["True","False","Only true when a\u2081 = 0","Only true for decreasing sequences"],c:0,h:"Think through each case: d > 0, d < 0, and d = 0 separately.",e:"If d > 0, there's a minimum (a\u2081) but no maximum. If d < 0, there's a maximum (a\u2081) but no minimum. Only when d = 0 is the sequence bounded on both sides (a single repeated value)."},
+{s:"Sequences",p:"A tank starts with 300 liters and drains 15 liters per minute, modeled as a\u2099 = 300 - 15n for whole-minute checks. Realistically, what is the domain?",o:["{0, 1, 2, ..., 20}","{0, 1, 2, 3, ...} with no upper limit","{n | n \u2265 0}, treating n as continuous","{0, 1, 2, ..., 19}"],c:0,h:"Figure out at which minute the tank actually reaches 0 — the sequence shouldn't continue past that.",e:"300 \u00f7 15 = 20, so the tank empties exactly at n = 20. Realistically, the domain stops there instead of continuing forever."},
+{s:"Sequences",p:"For that same draining tank (a\u2099 = 300 - 15n, domain 0 to 20), what is the range?",o:["{0, 15, 30, ..., 300} — a discrete decreasing set","All real numbers from 0 to 300","{300} only","All multiples of 20 from 0 to 300"],c:0,h:"List out the actual liter amounts the tank passes through at each whole minute.",e:"Since the tank is only checked at whole minutes, it only ever reads multiples of 15, from 300 down to 0 — not every value in between."},
+{s:"Linear Functions",p:"When does a linear function's range fail to be \"all real numbers,\" even though its domain is all reals?",o:["When the slope equals 0 (a horizontal line)","When the slope is very large","When the y-intercept is negative","This can never happen if the domain is all reals"],c:0,h:"Which single feature of a line locks its output to one repeated value?",e:"Only a slope of exactly 0 makes every output identical, restricting the range to a single value regardless of how large the domain is."},
+{s:"Comparing the Two",p:"A linear function y = 2x - 1 and a sequence a\u2099 = 2n - 1 share the exact same formula. Which statement correctly compares their long-run behavior as the input grows toward infinity?",o:["Both increase without bound at the same rate, but the sequence only does so at whole-number steps while the function does so continuously","They have completely different end behavior","Only the function increases; the sequence stays constant","Only the sequence increases; the function stays constant"],c:0,h:"Compare the *rate and direction* of growth, then separately compare *how smoothly* each one gets there.",e:"Sharing a slope/common-difference of 2 means both increase at the same rate forever — the only real difference is that the sequence jumps in whole-number steps while the function moves continuously."},
+{s:"Sequences",p:"A sequence has a\u2081 = 50 and d = -1/3. Roughly how many terms will it take before the sequence first drops below 0?",o:["151 terms","50 terms","3 terms","17 terms"],c:0,h:"Set 50 - (1/3)(n-1) < 0 and solve for n.",e:"50 - (1/3)(n-1) < 0 \u2192 (n-1) > 150 \u2192 n > 151, so it takes 151 terms — a small common difference means the sequence declines very slowly even though it still heads to -\u221e eventually."},
+{s:"Linear Functions",p:"A line has domain restricted to x \u2264 -3 and has a negative slope. As x moves toward -\u221e within that domain, what happens to y?",o:["y \u2192 \u221e","y \u2192 -\u221e","y approaches a constant","Cannot be determined without the y-intercept"],c:0,h:"A negative slope means y and x move in opposite directions — figure out which way y goes as x keeps decreasing.",e:"With a negative slope, as x keeps decreasing (moving toward -\u221e), y keeps increasing without bound, so y \u2192 \u221e even within the restricted domain."}
+];
+
+let current = 0;
+let score = 0;
+let points = 0;
+let streak = 0;
+let history = [];
+let currentOrder = [];
+let answered = false;
+
+function levelForIndex(i){ return Math.floor(i / 10); }
+
+const qNumChip = document.getElementById('qNumChip');
+const pointsChip = document.getElementById('pointsChip');
+const streakChip = document.getElementById('streakChip');
+const progressFill = document.getElementById('progressFill');
+const levelUpBanner = document.getElementById('levelUpBanner');
+const levelUpText = document.getElementById('levelUpText');
+const levelBadge = document.getElementById('levelBadge');
+const sectionTag = document.getElementById('sectionTag');
+const promptText = document.getElementById('promptText');
+const optionsWrap = document.getElementById('optionsWrap');
+const hintBtn = document.getElementById('hintBtn');
+const hintText = document.getElementById('hintText');
+const feedback = document.getElementById('feedback');
+const feedbackVerdict = document.getElementById('feedbackVerdict');
+const feedbackExplain = document.getElementById('feedbackExplain');
+const feedbackPts = document.getElementById('feedbackPts');
+const nextBtn = document.getElementById('nextBtn');
+const quizCard = document.getElementById('quizCard');
+const results = document.getElementById('results');
+const finalScore = document.getElementById('finalScore');
+const finalPoints = document.getElementById('finalPoints');
+const breakdown = document.getElementById('breakdown');
+const restartBtn = document.getElementById('restartBtn');
+const statBarAndProgress = document.querySelectorAll('.stat-bar, .progress-track');
+
+function shuffledIndices(n){
+  const arr = Array.from({length:n}, (_, i) => i);
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = QUESTIONS[current];
+  const lvl = LEVELS[levelForIndex(current)];
+
+  if(current > 0 && levelForIndex(current) !== levelForIndex(current - 1)){
+    levelUpText.textContent = `${lvl.emoji} ${lvl.name}`;
+    levelUpBanner.classList.add('show');
+    setTimeout(() => levelUpBanner.classList.remove('show'), 1800);
+  }
+
+  quizCard.style.borderTopColor = lvl.color;
+  levelBadge.style.background = lvl.color;
+  levelBadge.textContent = `${lvl.emoji} Level ${levelForIndex(current)+1}: ${lvl.name}`;
+  progressFill.style.background = lvl.color;
+
+  sectionTag.textContent = q.s;
+  promptText.textContent = q.p;
+  optionsWrap.innerHTML = '';
+  hintText.classList.remove('show');
+  hintText.textContent = q.h;
+  hintBtn.textContent = '💡 Show a hint';
+  feedback.classList.remove('show','correct-fb','wrong-fb');
+  feedbackPts.textContent = '';
+  nextBtn.classList.remove('show');
+
+  currentOrder = shuffledIndices(q.o.length);
+  currentOrder.forEach((origIdx, displayIdx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = q.o[origIdx];
+    btn.addEventListener('click', () => selectAnswer(displayIdx));
+    optionsWrap.appendChild(btn);
+  });
+
+  progressFill.style.width = (current / QUESTIONS.length * 100) + '%';
+  qNumChip.textContent = `${current + 1}/${QUESTIONS.length}`;
+  pointsChip.textContent = points;
+  streakChip.textContent = streak;
+}
+
+function selectAnswer(displayIdx){
+  if(answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  const lvl = LEVELS[levelForIndex(current)];
+  const opts = optionsWrap.querySelectorAll('.option');
+  opts.forEach(o => o.disabled = true);
+
+  const correctDisplayIdx = currentOrder.indexOf(q.c);
+  const isCorrect = displayIdx === correctDisplayIdx;
+  opts[displayIdx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if(!isCorrect){
+    opts[correctDisplayIdx].classList.add('correct');
+  }
+
+  feedback.classList.add('show', isCorrect ? 'correct-fb' : 'wrong-fb');
+  feedbackVerdict.textContent = isCorrect ? "That's right! 🎉" : "Not quite.";
+  feedbackExplain.textContent = q.e;
+
+  if(isCorrect){
+    score++;
+    streak++;
+    points += lvl.pts;
+    feedbackPts.textContent = `+${lvl.pts} points`;
+  } else {
+    streak = 0;
+  }
+  history.push(isCorrect);
+
+  pointsChip.textContent = points;
+  streakChip.textContent = streak;
+  nextBtn.classList.add('show');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'See results 🏁' : 'Next question';
+}
+
+hintBtn.addEventListener('click', () => {
+  hintText.classList.toggle('show');
+  hintBtn.textContent = hintText.classList.contains('show') ? '💡 Hide hint' : '💡 Show a hint';
+});
+
+nextBtn.addEventListener('click', () => {
+  if(current === QUESTIONS.length - 1){
+    showResults();
+  } else {
+    current++;
+    renderQuestion();
+  }
+});
+
+function showResults(){
+  quizCard.style.display = 'none';
+  levelUpBanner.classList.remove('show');
+  statBarAndProgress.forEach(el => el.style.display = 'none');
+  results.classList.add('show');
+  finalScore.textContent = `${score}/${QUESTIONS.length}`;
+  finalPoints.textContent = `⭐ ${points} points`;
+
+  const pct = score / QUESTIONS.length;
+  document.getElementById('trophyEmoji').textContent = pct >= 0.9 ? '👑' : pct >= 0.7 ? '🏆' : pct >= 0.5 ? '🥈' : '🌱';
+
+  const sections = {};
+  QUESTIONS.forEach((q, i) => {
+    if(!sections[q.s]) sections[q.s] = {correct:0, total:0};
+    sections[q.s].total++;
+    if(history[i]) sections[q.s].correct++;
+  });
+  const colorCycle = ["#2ECC71","#17C1C7","#4C6FFF","#FF9130","#FF4D8D"];
+  breakdown.innerHTML = '';
+  Object.entries(sections).forEach(([name, stat], idx) => {
+    const row = document.createElement('div');
+    row.className = 'breakdown-row';
+    row.innerHTML = `<span><span class="dot" style="background:${colorCycle[idx % colorCycle.length]}"></span>${name}</span><span>${stat.correct}/${stat.total}</span>`;
+    breakdown.appendChild(row);
+  });
+}
+
+restartBtn.addEventListener('click', () => {
+  current = 0; score = 0; points = 0; streak = 0; history = [];
+  quizCard.style.display = '';
+  statBarAndProgress.forEach(el => el.style.display = '');
+  results.classList.remove('show');
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
