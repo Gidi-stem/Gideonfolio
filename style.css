@@ -627,3 +627,30 @@ input.invalid, textarea.invalid { border-color: var(--danger); box-shadow: 0 0 0
    stretches the whole column past the screen. min-width:0 lets the
    column shrink and the .table-wrap scroll sideways instead. */
 .grid > *, .contact-grid > *, .hero-grid > * { min-width: 0; }
+
+
+/* ---------- Status badges ---------- */
+.badge-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.status {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  padding: 0.2em 0.65em;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  border: 1px solid transparent;
+  margin-bottom: 0.75rem;
+}
+.status::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-progress { color: var(--gold-dark); background: rgba(201,151,31,0.14); border-color: var(--gold); }
+.status-progress::before { animation: pulse 1.6s ease-in-out infinite; }
+.status-done { color: var(--success); background: rgba(44,122,82,0.1); border-color: var(--success); }
+.status-ongoing { color: var(--teal); background: rgba(27,107,101,0.1); border-color: var(--teal); }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.7); } }
+.project-note { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-soft); }
